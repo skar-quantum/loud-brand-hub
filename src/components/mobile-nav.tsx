@@ -20,6 +20,7 @@ import {
   Settings,
   Handshake,
 } from "lucide-react";
+import { LanguageToggle } from "@/components/language-toggle";
 
 const navigation = {
   main: [{ name: "Home", href: "/", icon: Home }],
@@ -67,12 +68,15 @@ export function MobileNav() {
           />
           <span className="text-lg font-bold">Brand Hub</span>
         </div>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
-        >
-          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <LanguageToggle />
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile Menu Overlay */}
