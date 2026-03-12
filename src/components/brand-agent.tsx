@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Pencil, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
