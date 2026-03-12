@@ -139,6 +139,7 @@ export function BrandAgent() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-4 shadow-2xl"
           >
             {/* Header with close button (only on non-home pages) */}
             {!isHomePage && (
