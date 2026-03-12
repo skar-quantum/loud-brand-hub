@@ -2,40 +2,43 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Image, Palette, Type, Sparkles, ArrowRight } from "lucide-react";
-
-const quickLinks = [
-  {
-    name: "Logo",
-    description: "Download logo assets",
-    href: "/logo",
-    icon: Image,
-    color: "from-green-500 to-emerald-600",
-  },
-  {
-    name: "Colors",
-    description: "Brand color palette",
-    href: "/colors",
-    icon: Palette,
-    color: "from-emerald-500 to-teal-600",
-  },
-  {
-    name: "Typography",
-    description: "Font system & styles",
-    href: "/typography",
-    icon: Type,
-    color: "from-teal-500 to-cyan-600",
-  },
-  {
-    name: "Inspiration",
-    description: "Creative examples",
-    href: "/inspiration",
-    icon: Sparkles,
-    color: "from-cyan-500 to-blue-600",
-  },
-];
+import { Image, Palette, Type, Sparkles, ArrowRight, Handshake } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function Home() {
+  const { t } = useLanguage();
+
+  const quickLinks = [
+    {
+      name: t("nav.logo"),
+      description: t("home.logoDesc"),
+      href: "/logo",
+      icon: Image,
+      color: "from-green-500 to-emerald-600",
+    },
+    {
+      name: t("nav.colors"),
+      description: t("home.colorsDesc"),
+      href: "/colors",
+      icon: Palette,
+      color: "from-emerald-500 to-teal-600",
+    },
+    {
+      name: t("nav.typography"),
+      description: t("home.typographyDesc"),
+      href: "/typography",
+      icon: Type,
+      color: "from-teal-500 to-cyan-600",
+    },
+    {
+      name: t("nav.partnerships"),
+      description: t("home.partnershipsDesc"),
+      href: "/partnerships",
+      icon: Handshake,
+      color: "from-cyan-500 to-blue-600",
+    },
+  ];
+
   return (
     <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4 lg:min-h-screen lg:p-8">
       <motion.div
@@ -61,11 +64,11 @@ export default function Home() {
         <h1 className="mb-2 text-2xl font-bold tracking-tight lg:mb-3 lg:text-4xl">
           LOUD{" "}
           <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-            Brand Agent
+            {t("home.title")}
           </span>
         </h1>
         <p className="mx-auto mb-6 max-w-md text-sm text-white/60 lg:mb-8 lg:text-lg">
-          Your AI assistant for brand guidelines, assets, and creative direction.
+          {t("home.subtitle")}
         </p>
 
         {/* Avatars */}
@@ -78,14 +81,14 @@ export default function Home() {
               />
             ))}
           </div>
-          <span className="ml-2 text-xs text-white/40 lg:text-sm">+50 team members</span>
+          <span className="ml-2 text-xs text-white/40 lg:text-sm">{t("home.teamMembers")}</span>
         </div>
 
         {/* Quick Links */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
           {quickLinks.map((link, i) => (
             <motion.div
-              key={link.name}
+              key={link.href}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.1 }}

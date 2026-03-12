@@ -37,6 +37,10 @@ const translations: Record<Language, Record<string, string>> = {
     "home.title": "Brand Agent",
     "home.subtitle": "Seu assistente de IA para guidelines de marca, assets e direção criativa.",
     "home.teamMembers": "+50 membros do time",
+    "home.logoDesc": "Baixar logos",
+    "home.colorsDesc": "Paleta de cores",
+    "home.typographyDesc": "Fontes e estilos",
+    "home.partnershipsDesc": "Logos de parceiros",
     
     // Partnerships
     "partnerships.title": "Parcerias",
@@ -70,7 +74,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Colors
     "colors.title": "Cores & Gradientes",
-    "colors.subtitle": "Paleta oficial de cores da marca LOUD.",
+    "colors.subtitle": "Paleta oficial de cores da marca LOUD. Clique em qualquer cor para copiar o hex.",
     
     // Brand Agent
     "agent.title": "Brand Agent",
@@ -113,6 +117,10 @@ const translations: Record<Language, Record<string, string>> = {
     "home.title": "Brand Agent",
     "home.subtitle": "Your AI assistant for brand guidelines, assets, and creative direction.",
     "home.teamMembers": "+50 team members",
+    "home.logoDesc": "Download logos",
+    "home.colorsDesc": "Brand color palette",
+    "home.typographyDesc": "Fonts & styles",
+    "home.partnershipsDesc": "Partner logos",
     
     // Partnerships
     "partnerships.title": "Partnerships",
@@ -146,7 +154,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Colors
     "colors.title": "Colors & Gradients",
-    "colors.subtitle": "Official LOUD brand color palette.",
+    "colors.subtitle": "Official LOUD brand color palette. Click any color to copy the hex value.",
     
     // Brand Agent
     "agent.title": "Brand Agent",

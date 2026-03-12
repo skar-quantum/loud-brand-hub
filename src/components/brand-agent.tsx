@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Pencil, Search, MessageCircle, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/language-context";
 
-const suggestions = [
-  { icon: Sparkles, label: "Review my design" },
-  { icon: Pencil, label: "Write on-brand copy" },
-  { icon: Search, label: "Find an asset" },
+const getSuggestions = (t: (key: string) => string) => [
+  { icon: Sparkles, label: t("agent.reviewDesign") },
+  { icon: Pencil, label: t("agent.writeCopy") },
+  { icon: Search, label: t("agent.findAsset") },
 ];
 
 interface Message {
@@ -20,6 +21,8 @@ interface Message {
 
 export function BrandAgent() {
   const pathname = usePathname();
+  const { t } = useLanguage();
+  const suggestions = getSuggestions(t);
   
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -127,8 +130,8 @@ export function BrandAgent() {
                 className="h-10 w-10 rounded-xl object-cover"
               />
               <div className="text-left">
-                <p className="font-medium">Brand Agent</p>
-                <p className="text-xs text-white/50">Click to ask anything about LOUD brand</p>
+                <p className="font-medium">{t("agent.title")}</p>
+                <p className="text-xs text-white/50">{t("agent.clickToAsk")}</p>
               </div>
             </div>
             <ChevronDown className="h-5 w-5 rotate-180 text-white/50" />
@@ -151,14 +154,14 @@ export function BrandAgent() {
                     alt="LOUD" 
                     className="h-6 w-6 rounded-lg object-cover"
                   />
-                  <span className="text-sm font-medium text-white/70">Brand Agent</span>
+                  <span className="text-sm font-medium text-white/70">{t("agent.title")}</span>
                 </div>
                 <button
                   onClick={() => setIsExpanded(false)}
                   className="flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white/60 transition-all hover:bg-white/20 hover:text-white"
                 >
                   <ChevronDown className="h-3 w-3" />
-                  Minimize
+                  {t("agent.minimize")}
                 </button>
               </div>
             )}
@@ -195,7 +198,7 @@ export function BrandAgent() {
                 {isLoading && messages[messages.length - 1]?.role === "user" && (
                   <div className="flex items-center gap-2 text-sm text-white/60">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-green-500 border-t-transparent" />
-                    Pensando...
+                    {t("agent.thinking")}
                   </div>
                 )}
                 <div ref={messagesEndRef} />
@@ -226,7 +229,7 @@ export function BrandAgent() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask the Brand Agent..."
+                  placeholder={t("agent.placeholder")}
                   className="w-full bg-transparent px-4 py-3 pr-12 text-sm text-white placeholder-white/40 outline-none lg:px-5 lg:py-4 lg:pr-14 lg:text-base"
                 />
                 <button
@@ -241,7 +244,7 @@ export function BrandAgent() {
 
             {/* Footer */}
             <p className="mt-3 hidden text-center text-xs text-white/30 lg:block">
-              Powered by <span className="font-semibold text-green-500">LOUD</span> AI ⚡
+              {t("agent.poweredBy")} <span className="font-semibold text-green-500">LOUD</span> AI ⚡
             </p>
           </motion.div>
         )}

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Download, Type, MonitorSmartphone } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
 
 const fontFamilies = [
   {
@@ -53,6 +54,8 @@ const typeScale = [
 ];
 
 export default function TypographyPage() {
+  const { t } = useLanguage();
+  
   return (
     <div className="p-4 lg:p-8 xl:p-12">
       <motion.div
@@ -62,9 +65,9 @@ export default function TypographyPage() {
         {/* Header */}
         <div className="mb-6 flex flex-col gap-4 lg:mb-8 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h1 className="text-2xl font-bold lg:text-3xl">Typography</h1>
+            <h1 className="text-2xl font-bold lg:text-3xl">{t("typography.title")}</h1>
             <p className="mt-1 text-sm text-white/60 lg:mt-2 lg:text-base">
-              Font families, weights, and usage guidelines for the LOUD brand.
+              {t("typography.subtitle")}
             </p>
           </div>
           <div className="flex gap-2">

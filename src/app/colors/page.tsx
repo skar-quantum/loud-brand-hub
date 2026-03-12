@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Download, Copy, Check } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/language-context";
 
 const colorPalette = {
   coreColors: {
@@ -128,6 +129,8 @@ function ColorSection({ name, colors }: { name: string; colors: Array<{ name: st
 }
 
 export default function ColorsPage() {
+  const { t } = useLanguage();
+  
   return (
     <div className="p-4 lg:p-8 xl:p-12">
       <motion.div
@@ -137,9 +140,9 @@ export default function ColorsPage() {
         {/* Header */}
         <div className="mb-6 flex flex-col gap-4 lg:mb-8 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h1 className="text-2xl font-bold lg:text-3xl">Colors & Gradients</h1>
+            <h1 className="text-2xl font-bold lg:text-3xl">{t("colors.title")}</h1>
             <p className="mt-1 text-sm text-white/60 lg:mt-2 lg:text-base">
-              Official LOUD brand color palette. Click any color to copy the hex value.
+              {t("colors.subtitle")}
             </p>
           </div>
           <Button variant="outline" className="w-full gap-2 lg:w-auto">
