@@ -10,62 +10,32 @@
   box-sizing: border-box;
 }
 
-/* Dark mode (default) */
-html.dark {
+html {
   color-scheme: dark;
 }
 
-html.dark body {
+body {
   background: #000;
   color: #fff;
 }
 
-/* Light mode */
-html.light {
-  color-scheme: light;
-}
-
-html.light body {
-  background: #fff;
-  color: #000;
-}
-
-/* Custom scrollbar - dark */
-html.dark ::-webkit-scrollbar {
+/* Custom scrollbar */
+::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-html.dark ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
 }
 
-html.dark ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
-html.dark ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
-}
-
-/* Custom scrollbar - light */
-html.light ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-html.light ::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-html.light ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-}
-
-html.light ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Selection */
@@ -109,16 +79,9 @@ html {
   background-clip: text;
 }
 
-/* Glass effect - dark */
-html.dark .glass {
+/* Glass effect */
+.glass {
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-/* Glass effect - light */
-html.light .glass {
-  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
