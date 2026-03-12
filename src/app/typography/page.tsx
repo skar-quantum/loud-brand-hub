@@ -30,7 +30,7 @@ const fontFamilies = [
     description: "Custom display typeface. Bold, impactful, designed for the LOUD brand identity.",
     usage: "Logos, headlines, featured text, merchandise",
     variants: [
-      { name: "Regular", file: "LOUD Tungsten.otf" },
+      { name: "Regular", file: "LOUD-Tungsten.otf" },
     ],
     folder: "loud-tungsten",
     zipFile: "loud-tungsten.zip",
