@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --loud-green: #00FF87;
+  --loud-green: #00FF3B;
   --loud-dark-green: #00CC6A;
   --loud-emerald: #00B359;
 }
@@ -10,32 +10,62 @@
   box-sizing: border-box;
 }
 
-html {
+/* Dark mode (default) */
+html.dark {
   color-scheme: dark;
 }
 
-body {
+html.dark body {
   background: #000;
   color: #fff;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
+/* Light mode */
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background: #fff;
+  color: #000;
+}
+
+/* Custom scrollbar - dark */
+html.dark ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
+html.dark ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+html.dark ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+html.dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* Custom scrollbar - light */
+html.light ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Selection */
@@ -79,15 +109,22 @@ html {
   background-clip: text;
 }
 
-/* Glass effect */
-.glass {
+/* Glass effect - dark */
+html.dark .glass {
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Glass effect - light */
+html.light .glass {
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
 
 /* Glow effect */
 .glow-green {
-  box-shadow: 0 0 20px rgba(0, 255, 135, 0.3),
-              0 0 40px rgba(0, 255, 135, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 59, 0.3),
+              0 0 40px rgba(0, 255, 59, 0.1);
 }
