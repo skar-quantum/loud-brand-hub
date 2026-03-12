@@ -49,9 +49,11 @@ export function Sidebar() {
       <div className="flex h-full flex-col">
         {/* Logo */}
         <div className="flex items-center gap-3 border-b border-white/10 p-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-green-400 to-green-600">
-            <span className="text-lg font-black text-black">L</span>
-          </div>
+          <img 
+            src="/logo-loud.png" 
+            alt="LOUD" 
+            className="h-8 w-8 rounded-lg object-cover"
+          />
           <span className="text-lg font-bold">Brand Hub</span>
           <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-white/60">
             BETA

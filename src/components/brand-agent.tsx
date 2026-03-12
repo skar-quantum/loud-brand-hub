@@ -121,9 +121,11 @@ export function BrandAgent() {
             className="flex w-full items-center justify-between rounded-2xl border border-white/20 bg-black/80 px-5 py-4 backdrop-blur-xl transition-all hover:border-white/40 hover:bg-black/90"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-green-400 to-green-600">
-                <MessageCircle className="h-5 w-5 text-black" />
-              </div>
+              <img 
+                src="/logo-loud.png" 
+                alt="LOUD" 
+                className="h-10 w-10 rounded-xl object-cover"
+              />
               <div className="text-left">
                 <p className="font-medium">Brand Agent</p>
                 <p className="text-xs text-white/50">Click to ask anything about LOUD brand</p>
@@ -144,9 +146,11 @@ export function BrandAgent() {
             {(
               <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-green-400 to-green-600">
-                    <MessageCircle className="h-3 w-3 text-black" />
-                  </div>
+                  <img 
+                    src="/logo-loud.png" 
+                    alt="LOUD" 
+                    className="h-6 w-6 rounded-lg object-cover"
+                  />
                   <span className="text-sm font-medium text-white/70">Brand Agent</span>
                 </div>
                 <button
