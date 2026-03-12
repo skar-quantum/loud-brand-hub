@@ -18,6 +18,7 @@ import {
   MessageCircle,
   ChevronLeft,
   Settings,
+  Handshake,
 } from "lucide-react";
 
 const navigation = {
@@ -26,6 +27,7 @@ const navigation = {
     { name: "Logo", href: "/logo", icon: Image },
     { name: "Colors & Gradients", href: "/colors", icon: Palette },
     { name: "Typography", href: "/typography", icon: Type },
+    { name: "Partnerships", href: "/partnerships", icon: Handshake },
     { name: "Screenshots", href: "/screenshots", icon: Camera },
     { name: "Artwork", href: "/artwork", icon: Brush },
   ],
