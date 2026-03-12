@@ -29,7 +29,7 @@ const navigation = {
     { name: "Screenshots", href: "/screenshots", icon: Camera },
     { name: "Artwork", href: "/artwork", icon: Brush },
   ],
-  subBrands: [{ name: "LOUD League", href: "/sub-brands/loud-league", icon: Building2 }],
+  subBrands: [{ name: "LOUD Sports Club", href: "/sub-brands/loud-sports-club", icon: Building2 }],
   tools: [
     { name: "Email Signature", href: "/tools/email-signature", icon: Mail },
     { name: "New Team Member", href: "/tools/new-member", icon: UserPlus },
