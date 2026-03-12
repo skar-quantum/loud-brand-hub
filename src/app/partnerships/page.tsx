@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Download, FileText, ExternalLink, Building2, Plus } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
+import { useAdmin } from "@/contexts/admin-context";
 
 interface Partner {
   id: string;
@@ -34,18 +36,25 @@ const defaultPartners: Partner[] = [
   },
 ];
 
-const categories = [
-  { id: "all", name: "Todos" },
-  { id: "main", name: "Main Partners" },
-  { id: "gaming", name: "Gaming" },
-  { id: "lifestyle", name: "Lifestyle" },
-  { id: "media", name: "Media" },
-];
+const getCategoryName = (id: string, t: (key: string) => string) => {
+  const map: Record<string, string> = {
+    all: t("partnerships.all"),
+    main: t("partnerships.mainPartners"),
+    gaming: t("partnerships.gaming"),
+    lifestyle: t("partnerships.lifestyle"),
+    media: t("partnerships.media"),
+  };
+  return map[id] || id;
+};
+
+const categoryIds = ["all", "main", "gaming", "lifestyle", "media"];
 
 export default function PartnershipsPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useLanguage();
+  const { isAdmin } = useAdmin();
 
   useEffect(() => {
     // TODO: Fetch from Supabase
@@ -68,32 +77,34 @@ export default function PartnershipsPage() {
         {/* Header */}
         <div className="mb-6 flex flex-col gap-4 lg:mb-8 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h1 className="text-2xl font-bold lg:text-3xl">Partnerships</h1>
+            <h1 className="text-2xl font-bold lg:text-3xl">{t("partnerships.title")}</h1>
             <p className="mt-1 text-sm text-white/60 lg:mt-2 lg:text-base">
-              Logos e brand guidelines dos nossos parceiros e patrocinadores.
+              {t("partnerships.subtitle")}
             </p>
           </div>
-          <a href="/admin">
-            <Button variant="outline" className="w-full gap-2 lg:w-auto">
-              <Plus className="h-4 w-4" />
-              Adicionar Parceiro
-            </Button>
-          </a>
+          {isAdmin && (
+            <a href="/admin">
+              <Button variant="outline" className="w-full gap-2 lg:w-auto">
+                <Plus className="h-4 w-4" />
+                {t("partnerships.addPartner")}
+              </Button>
+            </a>
+          )}
         </div>
 
         {/* Category Filter */}
         <div className="mb-6 flex flex-wrap gap-2 lg:mb-8">
-          {categories.map((category) => (
+          {categoryIds.map((categoryId) => (
             <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
+              key={categoryId}
+              onClick={() => setSelectedCategory(categoryId)}
               className={`rounded-full px-4 py-2 text-sm transition-all ${
-                selectedCategory === category.id
+                selectedCategory === categoryId
                   ? "bg-green-500 text-black font-medium"
                   : "bg-white/10 text-white/70 hover:bg-white/20"
               }`}
             >
-              {category.name}
+              {getCategoryName(categoryId, t)}
             </button>
           ))}
         </div>
@@ -106,16 +117,18 @@ export default function PartnershipsPage() {
         ) : filteredPartners.length === 0 ? (
           <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-12 text-center">
             <Building2 className="mx-auto mb-4 h-12 w-12 text-white/30" />
-            <h3 className="mb-2 text-lg font-semibold">Nenhum parceiro ainda</h3>
+            <h3 className="mb-2 text-lg font-semibold">{t("partnerships.noPartners")}</h3>
             <p className="mb-4 text-sm text-white/50">
-              Adicione logos e brand guidelines dos patrocinadores.
+              {t("partnerships.noPartnersDesc")}
             </p>
-            <a href="/admin">
-              <Button className="gap-2 bg-green-500 hover:bg-green-600">
-                <Plus className="h-4 w-4" />
-                Adicionar Primeiro Parceiro
-              </Button>
-            </a>
+            {isAdmin && (
+              <a href="/admin">
+                <Button className="gap-2 bg-green-500 hover:bg-green-600">
+                  <Plus className="h-4 w-4" />
+                  {t("partnerships.addPartner")}
+                </Button>
+              </a>
+            )}
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -155,7 +168,7 @@ export default function PartnershipsPage() {
                       className="flex items-center justify-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm transition-colors hover:bg-white/20"
                     >
                       <Download className="h-4 w-4" />
-                      Download Logo
+                      {t("partnerships.downloadLogo")}
                     </a>
                   )}
                   {partner.brandGuide && (
@@ -165,7 +178,7 @@ export default function PartnershipsPage() {
                       className="flex items-center justify-center gap-2 rounded-lg bg-green-500/20 px-3 py-2 text-sm text-green-400 transition-colors hover:bg-green-500/30"
                     >
                       <FileText className="h-4 w-4" />
-                      Brand Guide PDF
+                      {t("partnerships.brandGuide")}
                     </a>
                   )}
                   {partner.website && (
@@ -176,7 +189,7 @@ export default function PartnershipsPage() {
                       className="flex items-center justify-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-white/60 transition-colors hover:border-white/20 hover:text-white"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      Website
+                      {t("partnerships.website")}
                     </a>
                   )}
                 </div>
@@ -185,16 +198,18 @@ export default function PartnershipsPage() {
           </div>
         )}
 
-        {/* Info Box */}
-        <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 lg:p-6">
-          <h3 className="mb-2 font-semibold text-green-400">📋 Como usar</h3>
-          <ul className="space-y-1 text-sm text-white/70">
-            <li>• Faça upload de logos em alta resolução (PNG com transparência)</li>
-            <li>• Adicione o PDF do brand guide de cada parceiro</li>
-            <li>• Categorize por tipo de parceria (Main, Gaming, Lifestyle, Media)</li>
-            <li>• Use o Admin para gerenciar os arquivos</li>
-          </ul>
-        </div>
+        {/* Info Box - only for admins */}
+        {isAdmin && (
+          <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 lg:p-6">
+            <h3 className="mb-2 font-semibold text-green-400">{t("partnerships.howToUse")}</h3>
+            <ul className="space-y-1 text-sm text-white/70">
+              <li>• {t("partnerships.tip1")}</li>
+              <li>• {t("partnerships.tip2")}</li>
+              <li>• {t("partnerships.tip3")}</li>
+              <li>• {t("partnerships.tip4")}</li>
+            </ul>
+          </div>
+        )}
       </motion.div>
     </div>
   );

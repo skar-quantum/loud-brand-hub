@@ -3,6 +3,7 @@ import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
 import { MobileNav } from "@/components/mobile-nav";
 import { BrandAgent } from "@/components/brand-agent";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "LOUD Brand Hub",
@@ -27,20 +28,22 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <body className="bg-black text-white antialiased" style={{ fontFamily: "'GT America', system-ui, sans-serif" }}>
-        {/* Gradient background */}
-        <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-950/20 via-black to-emerald-950/20" />
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-green-400 to-emerald-500" />
-        </div>
+        <Providers>
+          {/* Gradient background */}
+          <div className="fixed inset-0 -z-10">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-950/20 via-black to-emerald-950/20" />
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-green-400 to-emerald-500" />
+          </div>
 
-        <MobileNav />
-        <Sidebar />
-        
-        <main className="min-h-screen pb-32 pt-16 lg:ml-64 lg:pb-40 lg:pt-0">
-          {children}
-        </main>
+          <MobileNav />
+          <Sidebar />
+          
+          <main className="min-h-screen pb-32 pt-16 lg:ml-64 lg:pb-40 lg:pt-0">
+            {children}
+          </main>
 
-        <BrandAgent />
+          <BrandAgent />
+        </Providers>
       </body>
     </html>
   );

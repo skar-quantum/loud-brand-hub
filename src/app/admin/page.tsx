@@ -14,8 +14,10 @@ import {
   Lock,
   Trash2,
   ExternalLink,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAdmin } from "@/contexts/admin-context";
 
 const uploadCategories = [
   {
@@ -73,18 +75,19 @@ interface StoredFile {
 }
 
 export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAdmin, login, logout } = useAdmin();
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [storedFiles, setStoredFiles] = useState<StoredFile[]>([]);
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAdmin) {
       fetchStoredFiles();
     }
-  }, [isAuthenticated]);
+  }, [isAdmin]);
 
   const fetchStoredFiles = async () => {
     try {
@@ -100,8 +103,10 @@ export default function AdminPage() {
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "LOUD2026") {
-      setIsAuthenticated(true);
+    const success = login(password);
+    if (!success) {
+      setLoginError(true);
+      setTimeout(() => setLoginError(false), 2000);
     }
   };
 
@@ -184,7 +189,7 @@ export default function AdminPage() {
     setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
   };
 
-  if (!isAuthenticated) {
+  if (!isAdmin) {
     return (
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-4 lg:min-h-screen">
         <motion.div
@@ -208,8 +213,14 @@ export default function AdminPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="mb-4 w-full rounded-xl border border-white/20 bg-black/50 px-4 py-3 text-white placeholder-white/40 outline-none focus:border-green-500"
+                className={cn(
+                  "mb-4 w-full rounded-xl border bg-black/50 px-4 py-3 text-white placeholder-white/40 outline-none transition-colors",
+                  loginError ? "border-red-500" : "border-white/20 focus:border-green-500"
+                )}
               />
+              {loginError && (
+                <p className="mb-4 text-center text-sm text-red-400">Senha incorreta</p>
+              )}
               <button
                 type="submit"
                 className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 py-3 font-semibold text-black transition-all hover:opacity-90"
@@ -230,11 +241,20 @@ export default function AdminPage() {
         animate={{ opacity: 1, y: 0 }}
       >
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold lg:text-3xl">Asset Manager</h1>
-          <p className="mt-1 text-sm text-white/60 lg:mt-2 lg:text-base">
-            Upload and manage brand assets. Files are stored in Supabase Storage.
-          </p>
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold lg:text-3xl">Asset Manager</h1>
+            <p className="mt-1 text-sm text-white/60 lg:mt-2 lg:text-base">
+              Upload and manage brand assets. Files are stored in Supabase Storage.
+            </p>
+          </div>
+          <button
+            onClick={logout}
+            className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/60 transition-all hover:border-white/20 hover:bg-white/10 hover:text-white"
+          >
+            <LogOut className="h-4 w-4" />
+            Logout
+          </button>
         </div>
 
         {/* Upload Categories */}

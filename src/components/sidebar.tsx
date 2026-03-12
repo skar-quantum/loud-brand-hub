@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/language-context";
+import { LanguageToggle } from "@/components/language-toggle";
 import {
   Home,
   Image,
@@ -172,6 +174,9 @@ export function Sidebar() {
 
         {/* Footer */}
         <div className="border-t border-white/10 p-3">
+          <div className="mb-2 px-3">
+            <LanguageToggle />
+          </div>
           <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-white/60 transition-colors hover:bg-white/5 hover:text-white">
             <MessageCircle className="h-4 w-4" />
             Share Feedback
