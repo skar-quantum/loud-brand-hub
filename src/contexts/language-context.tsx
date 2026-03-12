@@ -72,6 +72,15 @@ const translations: Record<Language, Record<string, string>> = {
     "typography.dont": "✗ Não Faça",
     "typography.tips": "ℹ Dicas",
     
+    // Assets
+    "assets.title": "Assets",
+    "assets.subtitle": "Padrões, elementos e recursos visuais para construir designs da marca.",
+    "assets.addAsset": "Adicionar Asset",
+    "assets.downloadAll": "Baixar Todos",
+    "assets.noAssets": "Nenhum asset ainda",
+    "assets.noAssetsDesc": "Assets de marca, padrões e elementos aparecerão aqui.",
+    "assets.addFirstAsset": "Adicionar Primeiro Asset",
+    
     // Colors
     "colors.title": "Cores & Gradientes",
     "colors.subtitle": "Paleta oficial de cores da marca LOUD. Clique em qualquer cor para copiar o hex.",
@@ -151,6 +160,15 @@ const translations: Record<Language, Record<string, string>> = {
     "typography.do": "✓ Do",
     "typography.dont": "✗ Don't",
     "typography.tips": "ℹ Tips",
+    
+    // Assets
+    "assets.title": "Assets",
+    "assets.subtitle": "Patterns, elements and visual resources to build brand designs.",
+    "assets.addAsset": "Add Asset",
+    "assets.downloadAll": "Download All",
+    "assets.noAssets": "No assets yet",
+    "assets.noAssetsDesc": "Brand assets, patterns and elements will appear here.",
+    "assets.addFirstAsset": "Add First Asset",
     
     // Colors
     "colors.title": "Colors & Gradients",
