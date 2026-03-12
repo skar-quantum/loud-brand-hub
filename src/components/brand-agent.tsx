@@ -4,7 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Pencil, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const suggestions = [
   { icon: Sparkles, label: "Review my design" },
@@ -13,18 +13,27 @@ const suggestions = [
 ];
 
 export function BrandAgent() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const { messages, sendMessage, status } = useChat();
+  const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const isLoading = status === "streaming" || status === "submitted";
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+    
+    const userInput = input;
+    setInput("");
+    await sendMessage({ text: userInput });
+  };
+
   const handleSuggestion = (label: string) => {
-    const fakeEvent = {
-      target: { value: label },
-    } as React.ChangeEvent<HTMLInputElement>;
-    handleInputChange(fakeEvent);
+    setInput(label);
   };
 
   return (
@@ -60,7 +69,14 @@ export function BrandAgent() {
                         Brand Agent
                       </div>
                     )}
-                    <div className="whitespace-pre-wrap">{message.content}</div>
+                    <div className="whitespace-pre-wrap">
+                      {message.parts?.map((part, i) => {
+                        if (part.type === "text") {
+                          return <span key={i}>{part.text}</span>;
+                        }
+                        return null;
+                      })}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -98,7 +114,7 @@ export function BrandAgent() {
             <input
               type="text"
               value={input}
-              onChange={handleInputChange}
+              onChange={(e) => setInput(e.target.value)}
               placeholder="Ask the Brand Agent..."
               className="w-full bg-transparent px-4 py-3 pr-12 text-sm text-white placeholder-white/40 outline-none lg:px-5 lg:py-4 lg:pr-14 lg:text-base"
             />
