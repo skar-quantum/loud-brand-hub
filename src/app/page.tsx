@@ -48,9 +48,13 @@ export default function Home() {
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-green-400 to-green-600 shadow-2xl shadow-green-500/30 lg:mb-6 lg:h-20 lg:w-20 lg:rounded-2xl"
+          className="mx-auto mb-4 h-16 w-16 overflow-hidden rounded-xl shadow-2xl shadow-green-500/30 lg:mb-6 lg:h-20 lg:w-20 lg:rounded-2xl"
         >
-          <span className="text-3xl font-black text-black lg:text-4xl">L</span>
+          <img 
+            src="/logo-loud.png" 
+            alt="LOUD" 
+            className="h-full w-full object-cover"
+          />
         </motion.div>
 
         {/* Title */}
