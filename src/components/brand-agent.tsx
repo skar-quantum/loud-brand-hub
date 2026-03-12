@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Sparkles, Pencil, Search, MessageCircle, X, ChevronUp } from "lucide-react";
+import { Send, Sparkles, Pencil, Search, MessageCircle, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const suggestions = [
@@ -30,11 +30,7 @@ export function BrandAgent() {
 
   // Update expanded state when navigating
   useEffect(() => {
-    if (pathname === "/") {
-      setIsExpanded(true);
-    } else {
-      setIsExpanded(false);
-    }
+    setIsExpanded(pathname === "/");
   }, [pathname]);
 
   useEffect(() => {
@@ -114,105 +110,93 @@ export function BrandAgent() {
     setIsExpanded(true);
   };
 
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
-  };
-
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 lg:left-64">
-      {/* Minimized State */}
-      <AnimatePresence>
+      <div className="mx-auto max-w-3xl px-4 pb-4 lg:px-6 lg:pb-6">
+        {/* Minimized State */}
         {!isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="mx-auto max-w-3xl px-4 pb-4 lg:px-6 lg:pb-6"
+            onClick={() => setIsExpanded(true)}
+            className="flex w-full items-center justify-between rounded-2xl border border-white/20 bg-black/80 px-5 py-4 backdrop-blur-xl transition-all hover:border-white/40 hover:bg-black/90"
           >
-            <button
-              onClick={toggleExpanded}
-              className="flex w-full items-center justify-between rounded-2xl border border-white/20 bg-black/80 px-5 py-4 backdrop-blur-xl transition-all hover:border-white/40 hover:bg-black/90"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-green-400 to-green-600">
-                  <MessageCircle className="h-5 w-5 text-black" />
-                </div>
-                <div className="text-left">
-                  <p className="font-medium">Brand Agent</p>
-                  <p className="text-xs text-white/50">Click to ask anything about LOUD brand</p>
-                </div>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-green-400 to-green-600">
+                <MessageCircle className="h-5 w-5 text-black" />
               </div>
-              <ChevronUp className="h-5 w-5 text-white/50" />
-            </button>
-          </motion.div>
+              <div className="text-left">
+                <p className="font-medium">Brand Agent</p>
+                <p className="text-xs text-white/50">Click to ask anything about LOUD brand</p>
+              </div>
+            </div>
+            <ChevronDown className="h-5 w-5 rotate-180 text-white/50" />
+          </motion.button>
         )}
-      </AnimatePresence>
 
-      {/* Expanded State */}
-      <AnimatePresence>
+        {/* Expanded State */}
         {isExpanded && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="mx-auto max-w-3xl px-4 pb-4 lg:px-6 lg:pb-6"
           >
-            {/* Close button (only on non-home pages) */}
+            {/* Header with close button (only on non-home pages) */}
             {!isHomePage && (
-              <div className="mb-2 flex justify-end">
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-green-400 to-green-600">
+                    <MessageCircle className="h-3 w-3 text-black" />
+                  </div>
+                  <span className="text-sm font-medium text-white/70">Brand Agent</span>
+                </div>
                 <button
-                  onClick={toggleExpanded}
-                  className="rounded-full bg-white/10 p-2 text-white/60 transition-all hover:bg-white/20 hover:text-white"
+                  onClick={() => setIsExpanded(false)}
+                  className="flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white/60 transition-all hover:bg-white/20 hover:text-white"
                 >
-                  <X className="h-4 w-4" />
+                  <ChevronDown className="h-3 w-3" />
+                  Minimize
                 </button>
               </div>
             )}
 
             {/* Messages */}
-            <AnimatePresence>
-              {messages.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-3 max-h-48 overflow-y-auto rounded-xl border border-white/10 bg-black/80 p-3 backdrop-blur-xl lg:mb-4 lg:max-h-64 lg:rounded-2xl lg:p-4"
-                >
-                  {messages.map((message) => (
+            {messages.length > 0 && (
+              <div className="mb-3 max-h-48 overflow-y-auto rounded-xl border border-white/10 bg-black/80 p-3 backdrop-blur-xl lg:mb-4 lg:max-h-64 lg:rounded-2xl lg:p-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={cn(
+                      "mb-2 last:mb-0 lg:mb-3",
+                      message.role === "user" ? "text-right" : "text-left"
+                    )}
+                  >
                     <div
-                      key={message.id}
                       className={cn(
-                        "mb-2 last:mb-0 lg:mb-3",
-                        message.role === "user" ? "text-right" : "text-left"
+                        "inline-block max-w-[85%] rounded-lg px-3 py-2 text-sm lg:rounded-xl lg:px-4",
+                        message.role === "user"
+                          ? "bg-green-500/20 text-green-400"
+                          : "bg-white/10 text-white"
                       )}
                     >
-                      <div
-                        className={cn(
-                          "inline-block max-w-[85%] rounded-lg px-3 py-2 text-sm lg:rounded-xl lg:px-4",
-                          message.role === "user"
-                            ? "bg-green-500/20 text-green-400"
-                            : "bg-white/10 text-white"
-                        )}
-                      >
-                        {message.role === "assistant" && (
-                          <div className="mb-1 flex items-center gap-2 text-xs text-white/60">
-                            <div className="h-3 w-3 rounded-full bg-gradient-to-br from-green-400 to-green-600 lg:h-4 lg:w-4" />
-                            Brand Agent
-                          </div>
-                        )}
-                        <div className="whitespace-pre-wrap">{message.content}</div>
-                      </div>
+                      {message.role === "assistant" && (
+                        <div className="mb-1 flex items-center gap-2 text-xs text-white/60">
+                          <div className="h-3 w-3 rounded-full bg-gradient-to-br from-green-400 to-green-600 lg:h-4 lg:w-4" />
+                          Brand Agent
+                        </div>
+                      )}
+                      <div className="whitespace-pre-wrap">{message.content}</div>
                     </div>
-                  ))}
-                  {isLoading && messages[messages.length - 1]?.role === "user" && (
-                    <div className="flex items-center gap-2 text-sm text-white/60">
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-green-500 border-t-transparent" />
-                      Pensando...
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  </div>
+                ))}
+                {isLoading && messages[messages.length - 1]?.role === "user" && (
+                  <div className="flex items-center gap-2 text-sm text-white/60">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-green-500 border-t-transparent" />
+                    Pensando...
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
 
             {/* Suggestions */}
             {messages.length === 0 && (
@@ -252,12 +236,14 @@ export function BrandAgent() {
             </form>
 
             {/* Footer */}
-            <p className="mt-2 hidden text-center text-xs text-white/30 lg:block">
-              Powered by <span className="font-semibold text-green-500">LOUD</span> AI ⚡
-            </p>
+            {isHomePage && (
+              <p className="mt-2 hidden text-center text-xs text-white/30 lg:block">
+                Powered by <span className="font-semibold text-green-500">LOUD</span> AI ⚡
+              </p>
+            )}
           </motion.div>
         )}
-      </AnimatePresence>
+      </div>
 
       {/* Gradient border effect */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-green-500 via-green-400 to-emerald-500" />
