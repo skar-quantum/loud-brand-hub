@@ -17,6 +17,7 @@ import {
   UserPlus,
   LayoutTemplate,
   Sparkles,
+  Settings,
 } from "lucide-react";
 
 const navigation = {
@@ -32,6 +33,7 @@ const navigation = {
   tools: [
     { name: "Email Signature", href: "/tools/email-signature", icon: Mail },
     { name: "New Team Member", href: "/tools/new-member", icon: UserPlus },
+    { name: "Admin", href: "/admin", icon: Settings },
   ],
   resources: [
     { name: "Templates", href: "/templates", icon: LayoutTemplate },
