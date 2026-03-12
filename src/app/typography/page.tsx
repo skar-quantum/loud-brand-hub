@@ -103,8 +103,11 @@ export default function TypographyPage() {
                 {/* Sample Preview */}
                 <div className="mb-4 rounded-lg bg-black/50 p-4 text-center">
                   <span 
-                    className="text-4xl font-bold tracking-tight lg:text-5xl"
-                    style={{ fontFamily: family.cssFamily }}
+                    className="text-4xl tracking-tight lg:text-5xl"
+                    style={{ 
+                      fontFamily: family.name === "LOUD Tungsten" ? "'LOUD Tungsten', sans-serif" : "'GT America', sans-serif",
+                      fontWeight: family.name === "LOUD Tungsten" ? 400 : 700
+                    }}
                   >
                     {family.sample}
                   </span>
@@ -178,7 +181,11 @@ export default function TypographyPage() {
                       fontSize: type.mobileSize,
                       lineHeight: type.lineHeight,
                       fontWeight: type.weight,
-                      fontFamily: type.font === "GT America Mono" ? "monospace" : undefined,
+                      fontFamily: type.font === "LOUD Tungsten" 
+                        ? "'LOUD Tungsten', sans-serif" 
+                        : type.font === "GT America Mono" 
+                          ? "'GT America Mono', monospace" 
+                          : "'GT America', sans-serif",
                     }}
                   >
                     {type.sample}
@@ -189,7 +196,11 @@ export default function TypographyPage() {
                       fontSize: type.size,
                       lineHeight: type.lineHeight,
                       fontWeight: type.weight,
-                      fontFamily: type.font === "GT America Mono" ? "monospace" : undefined,
+                      fontFamily: type.font === "LOUD Tungsten" 
+                        ? "'LOUD Tungsten', sans-serif" 
+                        : type.font === "GT America Mono" 
+                          ? "'GT America Mono', monospace" 
+                          : "'GT America', sans-serif",
                     }}
                   >
                     {type.sample}
