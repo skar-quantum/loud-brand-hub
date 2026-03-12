@@ -1,10 +1,9 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Pencil, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
 
 const suggestions = [
   { icon: Sparkles, label: "Review my design" },
@@ -12,12 +11,17 @@ const suggestions = [
   { icon: Search, label: "Find an asset" },
 ];
 
-export function BrandAgent() {
-  const { messages, sendMessage, status } = useChat();
-  const [input, setInput] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+interface Message {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+}
 
-  const isLoading = status === "streaming" || status === "submitted";
+export function BrandAgent() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -26,10 +30,69 @@ export function BrandAgent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    
-    const userInput = input;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: input.trim(),
+    };
+
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput("");
-    await sendMessage({ text: userInput });
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: newMessages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let assistantContent = "";
+
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "",
+      };
+
+      setMessages([...newMessages, assistantMessage]);
+
+      while (reader) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        assistantContent += chunk;
+
+        setMessages([
+          ...newMessages,
+          { ...assistantMessage, content: assistantContent },
+        ]);
+      }
+    } catch (error) {
+      console.error("Chat error:", error);
+      setMessages([
+        ...newMessages,
+        {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: "Desculpa, tive um problema. Tenta de novo?",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSuggestion = (label: string) => {
@@ -69,14 +132,7 @@ export function BrandAgent() {
                         Brand Agent
                       </div>
                     )}
-                    <div className="whitespace-pre-wrap">
-                      {message.parts?.map((part, i) => {
-                        if (part.type === "text") {
-                          return <span key={i}>{part.text}</span>;
-                        }
-                        return null;
-                      })}
-                    </div>
+                    <div className="whitespace-pre-wrap">{message.content}</div>
                   </div>
                 </div>
               ))}
