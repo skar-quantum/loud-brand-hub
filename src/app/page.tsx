@@ -37,48 +37,48 @@ const quickLinks = [
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-8">
+    <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4 lg:min-h-screen lg:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center"
+        className="w-full max-w-2xl text-center"
       >
         {/* Logo */}
         <motion.div
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-green-400 to-green-600 shadow-2xl shadow-green-500/30"
+          className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-green-400 to-green-600 shadow-2xl shadow-green-500/30 lg:mb-6 lg:h-20 lg:w-20 lg:rounded-2xl"
         >
-          <span className="text-4xl font-black text-black">L</span>
+          <span className="text-3xl font-black text-black lg:text-4xl">L</span>
         </motion.div>
 
         {/* Title */}
-        <h1 className="mb-3 text-4xl font-bold tracking-tight">
+        <h1 className="mb-2 text-2xl font-bold tracking-tight lg:mb-3 lg:text-4xl">
           LOUD{" "}
           <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
             Brand Agent
           </span>
         </h1>
-        <p className="mx-auto mb-8 max-w-md text-lg text-white/60">
-          Your AI assistant for brand guidelines, assets, and creative direction. Ask me anything!
+        <p className="mx-auto mb-6 max-w-md text-sm text-white/60 lg:mb-8 lg:text-lg">
+          Your AI assistant for brand guidelines, assets, and creative direction.
         </p>
 
         {/* Avatars */}
-        <div className="mb-12 flex items-center justify-center gap-2">
+        <div className="mb-8 flex items-center justify-center gap-2 lg:mb-12">
           <div className="flex -space-x-2">
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="h-8 w-8 rounded-full border-2 border-black bg-gradient-to-br from-white/20 to-white/5"
+                className="h-6 w-6 rounded-full border-2 border-black bg-gradient-to-br from-white/20 to-white/5 lg:h-8 lg:w-8"
               />
             ))}
           </div>
-          <span className="ml-2 text-sm text-white/40">+50 team members using</span>
+          <span className="ml-2 text-xs text-white/40 lg:text-sm">+50 team members</span>
         </div>
 
         {/* Quick Links */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
           {quickLinks.map((link, i) => (
             <motion.div
               key={link.name}
@@ -88,16 +88,16 @@ export default function Home() {
             >
               <Link
                 href={link.href}
-                className="group flex flex-col items-center rounded-xl border border-white/10 bg-white/5 p-6 transition-all hover:border-white/20 hover:bg-white/10"
+                className="group flex flex-col items-center rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:border-white/20 hover:bg-white/10 lg:p-6"
               >
                 <div
-                  className={`mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${link.color}`}
+                  className={`mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br lg:mb-3 lg:h-12 lg:w-12 lg:rounded-xl ${link.color}`}
                 >
-                  <link.icon className="h-6 w-6 text-white" />
+                  <link.icon className="h-5 w-5 text-white lg:h-6 lg:w-6" />
                 </div>
-                <p className="font-medium">{link.name}</p>
-                <p className="text-xs text-white/50">{link.description}</p>
-                <ArrowRight className="mt-2 h-4 w-4 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-white/60" />
+                <p className="text-sm font-medium lg:text-base">{link.name}</p>
+                <p className="hidden text-xs text-white/50 lg:block">{link.description}</p>
+                <ArrowRight className="mt-1 h-3 w-3 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-white/60 lg:mt-2 lg:h-4 lg:w-4" />
               </Link>
             </motion.div>
           ))}

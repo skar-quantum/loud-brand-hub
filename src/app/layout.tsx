@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
+import { MobileNav } from "@/components/mobile-nav";
 import { BrandAgent } from "@/components/brand-agent";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,9 +26,10 @@ export default function RootLayout({
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-green-400 to-emerald-500" />
         </div>
 
+        <MobileNav />
         <Sidebar />
         
-        <main className="ml-64 min-h-screen pb-40">
+        <main className="min-h-screen pb-32 pt-16 lg:ml-64 lg:pb-40 lg:pt-0">
           {children}
         </main>
 

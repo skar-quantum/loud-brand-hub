@@ -18,7 +18,6 @@ import {
   MessageCircle,
   Moon,
   ChevronLeft,
-  Download,
 } from "lucide-react";
 
 const navigation = {
@@ -45,7 +44,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-white/10 bg-black/50 backdrop-blur-xl">
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-64 border-r border-white/10 bg-black/50 backdrop-blur-xl lg:block">
       <div className="flex h-full flex-col">
         {/* Logo */}
         <div className="flex items-center gap-3 border-b border-white/10 p-4">
