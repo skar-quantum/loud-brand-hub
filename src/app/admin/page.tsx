@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Upload,
@@ -12,6 +12,8 @@ import {
   Check,
   X,
   Lock,
+  Trash2,
+  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -59,17 +61,45 @@ interface UploadedFile {
   size: number;
   category: string;
   status: "uploading" | "success" | "error";
+  url?: string;
+  error?: string;
+}
+
+interface StoredFile {
+  name: string;
+  category: string;
+  url: string;
+  size: number;
 }
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [storedFiles, setStoredFiles] = useState<StoredFile[]>([]);
   const [dragOver, setDragOver] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchStoredFiles();
+    }
+  }, [isAuthenticated]);
+
+  const fetchStoredFiles = async () => {
+    try {
+      const res = await fetch("/api/upload");
+      const data = await res.json();
+      if (data.files) {
+        setStoredFiles(data.files);
+      }
+    } catch (error) {
+      console.error("Failed to fetch files:", error);
+    }
+  };
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple password check - in production, use proper auth
     if (password === "LOUD2026") {
       setIsAuthenticated(true);
     }
@@ -78,7 +108,6 @@ export default function AdminPage() {
   const handleDrop = (e: React.DragEvent, categoryId: string) => {
     e.preventDefault();
     setDragOver(null);
-
     const files = Array.from(e.dataTransfer.files);
     processFiles(files, categoryId);
   };
@@ -90,8 +119,8 @@ export default function AdminPage() {
     }
   };
 
-  const processFiles = (files: File[], categoryId: string) => {
-    files.forEach((file) => {
+  const processFiles = async (files: File[], categoryId: string) => {
+    for (const file of files) {
       const uploadFile: UploadedFile = {
         id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         name: file.name,
@@ -102,15 +131,47 @@ export default function AdminPage() {
 
       setUploadedFiles((prev) => [...prev, uploadFile]);
 
-      // Simulate upload - replace with actual upload logic
-      setTimeout(() => {
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("category", categoryId);
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setUploadedFiles((prev) =>
+            prev.map((f) =>
+              f.id === uploadFile.id
+                ? { ...f, status: "success", url: data.url }
+                : f
+            )
+          );
+          // Refresh stored files list
+          fetchStoredFiles();
+        } else {
+          setUploadedFiles((prev) =>
+            prev.map((f) =>
+              f.id === uploadFile.id
+                ? { ...f, status: "error", error: data.error }
+                : f
+            )
+          );
+        }
+      } catch (error) {
         setUploadedFiles((prev) =>
           prev.map((f) =>
-            f.id === uploadFile.id ? { ...f, status: "success" } : f
+            f.id === uploadFile.id
+              ? { ...f, status: "error", error: "Upload failed" }
+              : f
           )
         );
-      }, 1500);
-    });
+      }
+    }
   };
 
   const formatFileSize = (bytes: number) => {
@@ -119,7 +180,7 @@ export default function AdminPage() {
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   };
 
-  const removeFile = (fileId: string) => {
+  const removeUpload = (fileId: string) => {
     setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
   };
 
@@ -172,7 +233,7 @@ export default function AdminPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold lg:text-3xl">Asset Manager</h1>
           <p className="mt-1 text-sm text-white/60 lg:mt-2 lg:text-base">
-            Upload and manage brand assets. Files will be available across the Brand Hub.
+            Upload and manage brand assets. Files are stored in Supabase Storage.
           </p>
         </div>
 
@@ -216,10 +277,10 @@ export default function AdminPage() {
           ))}
         </div>
 
-        {/* Uploaded Files */}
+        {/* Recent Uploads */}
         {uploadedFiles.length > 0 && (
-          <div>
-            <h2 className="mb-4 text-lg font-semibold">Uploaded Files</h2>
+          <div className="mb-8">
+            <h2 className="mb-4 text-lg font-semibold">Recent Uploads</h2>
             <div className="space-y-2">
               {uploadedFiles.map((file) => (
                 <motion.div
@@ -251,31 +312,76 @@ export default function AdminPage() {
                       <p className="text-sm font-medium">{file.name}</p>
                       <p className="text-xs text-white/50">
                         {formatFileSize(file.size)} • {file.category}
+                        {file.error && <span className="text-red-400"> • {file.error}</span>}
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => removeFile(file.id)}
-                    className="rounded-lg p-2 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {file.url && (
+                      <a
+                        href={file.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-lg p-2 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    )}
+                    <button
+                      onClick={() => removeUpload(file.id)}
+                      className="rounded-lg p-2 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Instructions */}
-        <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-6">
-          <h3 className="mb-3 font-semibold">📋 Next Steps</h3>
-          <ul className="space-y-2 text-sm text-white/60">
-            <li>• Connect to Supabase Storage for persistent file storage</li>
-            <li>• Set up OPENAI_API_KEY environment variable for Brand Agent</li>
-            <li>• Upload brand guidelines PDF for RAG knowledge base</li>
-            <li>• Add real logo assets to replace placeholders</li>
-          </ul>
-        </div>
+        {/* Stored Files */}
+        {storedFiles.length > 0 && (
+          <div>
+            <h2 className="mb-4 text-lg font-semibold">
+              Stored Assets ({storedFiles.length})
+            </h2>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {storedFiles.map((file, i) => (
+                <a
+                  key={i}
+                  href={file.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:border-white/20 hover:bg-white/10"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                    {file.name.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
+                      <Image className="h-5 w-5 text-white/60" />
+                    ) : (
+                      <FileText className="h-5 w-5 text-white/60" />
+                    )}
+                  </div>
+                  <div className="flex-1 overflow-hidden">
+                    <p className="truncate text-sm font-medium">{file.name}</p>
+                    <p className="text-xs text-white/50">{file.category}</p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 text-white/40" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {storedFiles.length === 0 && uploadedFiles.length === 0 && (
+          <div className="rounded-xl border border-white/10 bg-white/5 p-8 text-center">
+            <Upload className="mx-auto mb-4 h-12 w-12 text-white/20" />
+            <p className="text-white/60">No assets uploaded yet</p>
+            <p className="mt-1 text-sm text-white/40">
+              Drag and drop files to any category above
+            </p>
+          </div>
+        )}
       </motion.div>
     </div>
   );
