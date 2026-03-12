@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useChat } from "ai/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Pencil, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 const suggestions = [
   { icon: Sparkles, label: "Review my design" },
@@ -11,39 +12,19 @@ const suggestions = [
   { icon: Search, label: "Find an asset" },
 ];
 
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
-
 export function BrandAgent() {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
-
-    const userMessage = input.trim();
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: `Como Brand Agent da LOUD, posso te ajudar com isso! O que você precisa saber sobre "${userMessage}"?`,
-        },
-      ]);
-      setIsLoading(false);
-    }, 1000);
-  };
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSuggestion = (label: string) => {
-    setInput(label);
+    const fakeEvent = {
+      target: { value: label },
+    } as React.ChangeEvent<HTMLInputElement>;
+    handleInputChange(fakeEvent);
   };
 
   return (
@@ -57,9 +38,9 @@ export function BrandAgent() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-3 max-h-48 overflow-y-auto rounded-xl border border-white/10 bg-black/80 p-3 backdrop-blur-xl lg:mb-4 lg:max-h-64 lg:rounded-2xl lg:p-4"
             >
-              {messages.map((message, i) => (
+              {messages.map((message) => (
                 <div
-                  key={i}
+                  key={message.id}
                   className={cn(
                     "mb-2 last:mb-0 lg:mb-3",
                     message.role === "user" ? "text-right" : "text-left"
@@ -67,7 +48,7 @@ export function BrandAgent() {
                 >
                   <div
                     className={cn(
-                      "inline-block rounded-lg px-3 py-2 text-sm lg:rounded-xl lg:px-4",
+                      "inline-block max-w-[85%] rounded-lg px-3 py-2 text-sm lg:rounded-xl lg:px-4",
                       message.role === "user"
                         ? "bg-green-500/20 text-green-400"
                         : "bg-white/10 text-white"
@@ -79,21 +60,22 @@ export function BrandAgent() {
                         Brand Agent
                       </div>
                     )}
-                    {message.content}
+                    <div className="whitespace-pre-wrap">{message.content}</div>
                   </div>
                 </div>
               ))}
-              {isLoading && (
+              {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex items-center gap-2 text-sm text-white/60">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-green-500 border-t-transparent" />
                   Pensando...
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Suggestions - hidden on mobile when there are messages */}
+        {/* Suggestions */}
         {messages.length === 0 && (
           <div className="mb-3 flex flex-wrap justify-center gap-2 lg:mb-4">
             {suggestions.map((item) => (
@@ -116,7 +98,7 @@ export function BrandAgent() {
             <input
               type="text"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={handleInputChange}
               placeholder="Ask the Brand Agent..."
               className="w-full bg-transparent px-4 py-3 pr-12 text-sm text-white placeholder-white/40 outline-none lg:px-5 lg:py-4 lg:pr-14 lg:text-base"
             />
@@ -130,9 +112,9 @@ export function BrandAgent() {
           </div>
         </form>
 
-        {/* Footer - hidden on mobile */}
+        {/* Footer */}
         <p className="mt-2 hidden text-center text-xs text-white/30 lg:block">
-          Edit with <span className="font-semibold text-green-500">LOUD</span> ✕
+          Powered by <span className="font-semibold text-green-500">LOUD</span> AI ⚡
         </p>
       </div>
 
