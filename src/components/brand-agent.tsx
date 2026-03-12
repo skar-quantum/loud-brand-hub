@@ -20,17 +20,16 @@ interface Message {
 
 export function BrandAgent() {
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
   
-  const [isExpanded, setIsExpanded] = useState(isHomePage);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Update expanded state when navigating
+  // Reset expanded state when navigating
   useEffect(() => {
-    setIsExpanded(pathname === "/");
+    setIsExpanded(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -141,8 +140,8 @@ export function BrandAgent() {
             animate={{ opacity: 1, y: 0 }}
             className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-4 shadow-2xl"
           >
-            {/* Header with close button (only on non-home pages) */}
-            {!isHomePage && (
+            {/* Header with close button */}
+            {(
               <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-green-400 to-green-600">
@@ -237,11 +236,9 @@ export function BrandAgent() {
             </form>
 
             {/* Footer */}
-            {isHomePage && (
-              <p className="mt-2 hidden text-center text-xs text-white/30 lg:block">
-                Powered by <span className="font-semibold text-green-500">LOUD</span> AI ⚡
-              </p>
-            )}
+            <p className="mt-3 hidden text-center text-xs text-white/30 lg:block">
+              Powered by <span className="font-semibold text-green-500">LOUD</span> AI ⚡
+            </p>
           </motion.div>
         )}
       </div>
