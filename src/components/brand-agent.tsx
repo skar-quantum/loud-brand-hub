@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Send, Sparkles, Pencil, Search, MessageCircle, X, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { Send, Sparkles, Pencil, Search, ChevronDown, ImageIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/language-context";
 
@@ -11,12 +11,14 @@ const getSuggestions = (t: (key: string) => string) => [
   { icon: Sparkles, label: t("agent.reviewDesign") },
   { icon: Pencil, label: t("agent.writeCopy") },
   { icon: Search, label: t("agent.findAsset") },
+  { icon: ImageIcon, label: t("agent.checkSponsors") },
 ];
 
 interface Message {
   id: string;
   role: "user" | "assistant";
   content: string;
+  image?: string;
 }
 
 export function BrandAgent() {
@@ -28,9 +30,11 @@ export function BrandAgent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Reset expanded state when navigating
   useEffect(() => {
     setIsExpanded(false);
   }, [pathname]);
@@ -39,19 +43,43 @@ export function BrandAgent() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    if ((!input.trim() && !selectedImage) || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
-      content: input.trim(),
+      content: input.trim() || t("agent.analyzeImage"),
+      image: selectedImage || undefined,
     };
 
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput("");
+    const imageToSend = selectedImage;
+    setSelectedImage(null);
+    setImageFile(null);
     setIsLoading(true);
 
     try {
@@ -62,7 +90,9 @@ export function BrandAgent() {
           messages: newMessages.map((m) => ({
             role: m.role,
             content: m.content,
+            image: m.image,
           })),
+          image: imageToSend,
         }),
       });
 
@@ -108,13 +138,26 @@ export function BrandAgent() {
   };
 
   const handleSuggestion = (label: string) => {
-    setInput(label);
+    if (label === t("agent.checkSponsors")) {
+      fileInputRef.current?.click();
+    } else {
+      setInput(label);
+    }
     setIsExpanded(true);
   };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 lg:left-64">
       <div className="mx-auto max-w-3xl px-4 pb-4 lg:px-6 lg:pb-6">
+        {/* Hidden file input */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleImageSelect}
+          accept="image/*"
+          className="hidden"
+        />
+
         {/* Minimized State */}
         {!isExpanded && (
           <motion.button
@@ -145,26 +188,24 @@ export function BrandAgent() {
             animate={{ opacity: 1, y: 0 }}
             className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-4 shadow-2xl"
           >
-            {/* Header with close button */}
-            {(
-              <div className="mb-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img 
-                    src="/logo-loud.png" 
-                    alt="LOUD" 
-                    className="h-6 w-6 rounded-lg object-cover"
-                  />
-                  <span className="text-sm font-medium text-white/70">{t("agent.title")}</span>
-                </div>
-                <button
-                  onClick={() => setIsExpanded(false)}
-                  className="flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white/60 transition-all hover:bg-white/20 hover:text-white"
-                >
-                  <ChevronDown className="h-3 w-3" />
-                  {t("agent.minimize")}
-                </button>
+            {/* Header */}
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img 
+                  src="/logo-loud.png" 
+                  alt="LOUD" 
+                  className="h-6 w-6 rounded-lg object-cover"
+                />
+                <span className="text-sm font-medium text-white/70">{t("agent.title")}</span>
               </div>
-            )}
+              <button
+                onClick={() => setIsExpanded(false)}
+                className="flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white/60 transition-all hover:bg-white/20 hover:text-white"
+              >
+                <ChevronDown className="h-3 w-3" />
+                {t("agent.minimize")}
+              </button>
+            </div>
 
             {/* Messages */}
             {messages.length > 0 && (
@@ -190,6 +231,13 @@ export function BrandAgent() {
                           <div className="h-3 w-3 rounded-full bg-gradient-to-br from-green-400 to-green-600 lg:h-4 lg:w-4" />
                           Brand Agent
                         </div>
+                      )}
+                      {message.image && (
+                        <img 
+                          src={message.image} 
+                          alt="Uploaded" 
+                          className="mb-2 max-h-32 rounded-lg object-contain"
+                        />
                       )}
                       <div className="whitespace-pre-wrap">{message.content}</div>
                     </div>
@@ -222,6 +270,23 @@ export function BrandAgent() {
               </div>
             )}
 
+            {/* Selected Image Preview */}
+            {selectedImage && (
+              <div className="mb-3 relative inline-block">
+                <img 
+                  src={selectedImage} 
+                  alt="Selected" 
+                  className="max-h-24 rounded-lg border border-white/20"
+                />
+                <button
+                  onClick={removeImage}
+                  className="absolute -right-2 -top-2 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            )}
+
             {/* Input */}
             <form onSubmit={handleSubmit} className="relative">
               <div className="relative overflow-hidden rounded-xl border border-white/20 bg-black/60 backdrop-blur-xl transition-all focus-within:border-white/40 lg:rounded-2xl">
@@ -229,16 +294,26 @@ export function BrandAgent() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={t("agent.placeholder")}
-                  className="w-full bg-transparent px-4 py-3 pr-12 text-sm text-white placeholder-white/40 outline-none lg:px-5 lg:py-4 lg:pr-14 lg:text-base"
+                  placeholder={selectedImage ? t("agent.askAboutImage") : t("agent.placeholder")}
+                  className="w-full bg-transparent px-4 py-3 pr-24 text-sm text-white placeholder-white/40 outline-none lg:px-5 lg:py-4 lg:pr-28 lg:text-base"
                 />
-                <button
-                  type="submit"
-                  disabled={!input.trim() || isLoading}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-1.5 text-white/60 transition-all hover:bg-white/20 hover:text-white disabled:opacity-50 lg:right-3 lg:p-2"
-                >
-                  <Send className="h-4 w-4" />
-                </button>
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 lg:right-3">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="rounded-full bg-white/10 p-1.5 text-white/60 transition-all hover:bg-white/20 hover:text-white lg:p-2"
+                    title={t("agent.uploadImage")}
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={(!input.trim() && !selectedImage) || isLoading}
+                    className="rounded-full bg-white/10 p-1.5 text-white/60 transition-all hover:bg-white/20 hover:text-white disabled:opacity-50 lg:p-2"
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </form>
 

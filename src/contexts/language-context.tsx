@@ -94,6 +94,10 @@ const translations: Record<Language, Record<string, string>> = {
     "agent.reviewDesign": "Revisar meu design",
     "agent.writeCopy": "Escrever copy on-brand",
     "agent.findAsset": "Encontrar um asset",
+    "agent.checkSponsors": "Verificar patrocinadores",
+    "agent.uploadImage": "Enviar imagem",
+    "agent.analyzeImage": "Analisar imagem",
+    "agent.askAboutImage": "Pergunte sobre esta imagem...",
     "agent.poweredBy": "Powered by",
     
     // Common
@@ -183,6 +187,10 @@ const translations: Record<Language, Record<string, string>> = {
     "agent.reviewDesign": "Review my design",
     "agent.writeCopy": "Write on-brand copy",
     "agent.findAsset": "Find an asset",
+    "agent.checkSponsors": "Check sponsors",
+    "agent.uploadImage": "Upload image",
+    "agent.analyzeImage": "Analyze image",
+    "agent.askAboutImage": "Ask about this image...",
     "agent.poweredBy": "Powered by",
     
     // Common
