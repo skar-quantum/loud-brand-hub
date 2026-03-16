@@ -26,87 +26,75 @@ export default function LogoPage() {
           </Button>
         </div>
 
-        {/* Lockup */}
+        {/* Seal */}
         <section className="mb-8 lg:mb-12">
-          <h2 className="mb-3 text-lg font-semibold lg:mb-4 lg:text-xl">Lockup</h2>
+          <h2 className="mb-3 text-lg font-semibold lg:mb-4 lg:text-xl">Seal</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
             <AssetCard
-              name="Logo Lockup — Black"
+              name="Seal — Black"
               description="For light backgrounds"
               variant="light"
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/seal-black.svg"
               preview={
-                <div className="flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-green-400 to-green-600 lg:h-8 lg:w-8 lg:rounded-lg">
-                    <span className="text-sm font-black text-white lg:text-lg">L</span>
-                  </div>
-                  <span className="text-xl font-black text-black lg:text-2xl">LOUD</span>
-                </div>
+                <img src="/logos/seal-black.png" alt="LOUD Seal Black" className="h-16 w-auto" />
               }
             />
             <AssetCard
-              name="Logo Lockup — White"
+              name="Seal — White"
               description="For dark backgrounds"
               variant="dark"
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/seal-white.svg"
               preview={
-                <div className="flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-green-400 to-green-600 lg:h-8 lg:w-8 lg:rounded-lg">
-                    <span className="text-sm font-black text-white lg:text-lg">L</span>
-                  </div>
-                  <span className="text-xl font-black text-white lg:text-2xl">LOUD</span>
-                </div>
+                <img src="/logos/seal-white.png" alt="LOUD Seal White" className="h-16 w-auto" />
               }
             />
             <AssetCard
-              name="Logo Lockup — Color"
+              name="Seal — Green"
               description="Full color version"
-              variant="color"
+              variant="dark"
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/seal-green.svg"
               preview={
-                <div className="flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-black lg:h-8 lg:w-8 lg:rounded-lg">
-                    <span className="text-sm font-black text-green-400 lg:text-lg">L</span>
-                  </div>
-                  <span className="text-xl font-black text-black lg:text-2xl">LOUD</span>
-                </div>
+                <img src="/logos/seal-green.png" alt="LOUD Seal Green" className="h-16 w-auto" />
               }
             />
           </div>
         </section>
 
-        {/* Logomark */}
+        {/* Symbol */}
         <section className="mb-8 lg:mb-12">
-          <h2 className="mb-3 text-lg font-semibold lg:mb-4 lg:text-xl">Logomark</h2>
+          <h2 className="mb-3 text-lg font-semibold lg:mb-4 lg:text-xl">Symbol</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
             <AssetCard
-              name="Logomark — Color"
+              name="Symbol — Green"
               description="Full color, default usage"
               variant="dark"
               formats={["SVG", "PNG"]}
+              downloadUrl="/logos/symbol-green.svg"
               preview={
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-green-400 to-green-600 lg:h-16 lg:w-16 lg:rounded-2xl">
-                  <span className="text-2xl font-black text-white lg:text-3xl">L</span>
-                </div>
+                <img src="/logos/symbol-green.png" alt="LOUD Symbol Green" className="h-16 w-auto" />
               }
             />
             <AssetCard
-              name="Logomark — Black"
+              name="Symbol — Black"
               description="For light backgrounds"
               variant="light"
               formats={["SVG", "PNG"]}
+              downloadUrl="/logos/symbol-black.svg"
               preview={
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-black lg:h-16 lg:w-16 lg:rounded-2xl">
-                  <span className="text-2xl font-black text-white lg:text-3xl">L</span>
-                </div>
+                <img src="/logos/symbol-black.png" alt="LOUD Symbol Black" className="h-16 w-auto" />
               }
             />
             <AssetCard
-              name="Logomark — White"
+              name="Symbol — White"
               description="For dark backgrounds"
               variant="dark"
               formats={["SVG", "PNG"]}
+              downloadUrl="/logos/symbol-white.svg"
               preview={
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-white bg-transparent lg:h-16 lg:w-16 lg:rounded-2xl">
-                  <span className="text-2xl font-black text-white lg:text-3xl">L</span>
-                </div>
+                <img src="/logos/symbol-white.png" alt="LOUD Symbol White" className="h-16 w-auto" />
               }
             />
           </div>
@@ -207,23 +195,32 @@ export default function LogoPage() {
             <AssetCard
               name="Wordmark — Black"
               description="For light backgrounds"
-              variant="color"
-              formats={["SVG", "PNG", "PDF"]}
-              preview={<span className="text-3xl font-black text-black lg:text-4xl">LOUD</span>}
-            />
-            <AssetCard
-              name="Wordmark — Creme"
-              description="For dark backgrounds"
-              variant="dark"
-              formats={["SVG", "PNG", "PDF"]}
-              preview={<span className="text-3xl font-black text-stone-200 lg:text-4xl">LOUD</span>}
+              variant="light"
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/wordmark-black.svg"
+              preview={
+                <img src="/logos/wordmark-black.png" alt="LOUD Wordmark Black" className="h-8 w-auto" />
+              }
             />
             <AssetCard
               name="Wordmark — White"
               description="For dark backgrounds"
               variant="dark"
-              formats={["SVG", "PNG", "PDF"]}
-              preview={<span className="text-3xl font-black text-white lg:text-4xl">LOUD</span>}
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/wordmark-white.svg"
+              preview={
+                <img src="/logos/wordmark-white.png" alt="LOUD Wordmark White" className="h-8 w-auto" />
+              }
+            />
+            <AssetCard
+              name="Wordmark — Green"
+              description="Full color version"
+              variant="dark"
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/wordmark-green.svg"
+              preview={
+                <img src="/logos/wordmark-green.png" alt="LOUD Wordmark Green" className="h-8 w-auto" />
+              }
             />
           </div>
         </section>

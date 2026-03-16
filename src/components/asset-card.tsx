@@ -10,6 +10,7 @@ interface AssetCardProps {
   formats?: string[];
   variant?: "light" | "dark" | "color";
   className?: string;
+  downloadUrl?: string;
 }
 
 export function AssetCard({
@@ -19,7 +20,23 @@ export function AssetCard({
   formats = ["PNG", "PDF"],
   variant = "dark",
   className,
+  downloadUrl,
 }: AssetCardProps) {
+  const handleDownload = (format: string) => {
+    if (!downloadUrl) return;
+    
+    // Replace extension with requested format
+    const baseUrl = downloadUrl.replace(/\.(svg|png|pdf)$/i, "");
+    const url = `${baseUrl}.${format.toLowerCase()}`;
+    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${name.replace(/\s+/g, "-").toLowerCase()}.${format.toLowerCase()}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div
       className={cn(
@@ -49,7 +66,14 @@ export function AssetCard({
           {formats.map((format) => (
             <button
               key={format}
-              className="rounded px-2 py-1 text-[10px] font-medium text-white/50 transition-colors hover:bg-white/10 hover:text-white"
+              onClick={() => handleDownload(format)}
+              className={cn(
+                "rounded px-2 py-1 text-[10px] font-medium transition-colors",
+                downloadUrl 
+                  ? "text-white/70 hover:bg-green-500/20 hover:text-green-400" 
+                  : "text-white/50 hover:bg-white/10 hover:text-white"
+              )}
+              title={downloadUrl ? `Download ${format}` : format}
             >
               {format}
             </button>
