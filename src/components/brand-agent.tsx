@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Send, Sparkles, Pencil, Search, ChevronDown, ImageIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/language-context";
@@ -164,17 +164,22 @@ export function BrandAgent() {
           className="hidden"
         />
 
-        <AnimatePresence mode="wait">
+        {/* Chat Container - Single element, no mount/unmount */}
+        <motion.div
+          layout
+          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          className={cn(
+            "rounded-2xl border backdrop-blur-xl",
+            isExpanded 
+              ? "border-white/10 bg-[#0a0a0a] p-4 shadow-2xl" 
+              : "border-white/20 bg-black/80"
+          )}
+        >
           {/* Minimized State */}
           {!isExpanded && (
-            <motion.button
-              key="minimized"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
+            <button
               onClick={() => setIsExpanded(true)}
-              className="flex w-full items-center justify-between rounded-2xl border border-white/20 bg-black/80 px-5 py-4 backdrop-blur-xl transition-all hover:border-white/40 hover:bg-black/90"
+              className="flex w-full items-center justify-between px-5 py-4 transition-all hover:bg-white/5"
             >
               <div className="flex items-center gap-3">
                 <img 
@@ -188,19 +193,12 @@ export function BrandAgent() {
                 </div>
               </div>
               <ChevronDown className="h-5 w-5 rotate-180 text-white/50" />
-            </motion.button>
+            </button>
           )}
 
           {/* Expanded State */}
           {isExpanded && (
-            <motion.div
-              key="expanded"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
-              className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-4 shadow-2xl"
-            >
+            <>
             {/* Header */}
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -334,9 +332,9 @@ export function BrandAgent() {
             <p className="mt-3 hidden text-center text-xs text-white/30 lg:block">
               {t("agent.poweredBy")} <span className="font-semibold text-green-500">LOUD</span> AI ⚡
             </p>
-          </motion.div>
+          </>
         )}
-        </AnimatePresence>
+        </motion.div>
       </div>
 
       {/* Gradient border effect */}
