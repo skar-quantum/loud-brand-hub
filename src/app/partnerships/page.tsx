@@ -16,23 +16,79 @@ interface Partner {
   category: "main" | "gaming" | "lifestyle" | "media";
 }
 
-// Placeholder partners - will be replaced with Supabase data
+// Partners data from CREATIVE TEAM Drive folder
 const defaultPartners: Partner[] = [
   {
-    id: "1",
-    name: "Red Bull",
-    logo: "/partners/redbull.png",
-    brandGuide: "/partners/redbull-brandguide.pdf",
-    website: "https://redbull.com",
+    id: "poco",
+    name: "POCO",
+    logo: "/partners/poco-logo.png",
+    brandGuide: "/partners/poco-brandguide.pdf",
+    website: "https://www.po.co/global/",
     category: "main",
   },
   {
-    id: "2",
-    name: "Samsung",
-    logo: "/partners/samsung.png",
+    id: "samsung",
+    name: "Samsung Odyssey",
+    logo: "/partners/samsung-odyssey-logo.svg",
     brandGuide: "/partners/samsung-brandguide.pdf",
-    website: "https://samsung.com",
-    category: "main",
+    website: "https://www.samsung.com/br/monitors/gaming/",
+    category: "gaming",
+  },
+  {
+    id: "snickers",
+    name: "Snickers",
+    logo: "/partners/snickers-logo.svg",
+    brandGuide: "/partners/snickers-brandguide.pdf",
+    website: "https://snickers.com",
+    category: "lifestyle",
+  },
+  {
+    id: "havan",
+    name: "Havan",
+    logo: "", // AI file only - no web logo available
+    brandGuide: "/partners/havan-brandguide.pdf",
+    website: "https://www.havan.com.br/",
+    category: "lifestyle",
+  },
+  {
+    id: "cblol",
+    name: "CBLOL",
+    logo: "/partners/cblol-logo.png",
+    brandGuide: "",
+    website: "https://lolesports.com/pt-BR/lol/cblol",
+    category: "gaming",
+  },
+  {
+    id: "uniasselvi",
+    name: "Uniasselvi",
+    logo: "",
+    brandGuide: "",
+    website: "https://portal.uniasselvi.com.br/",
+    category: "lifestyle",
+  },
+  {
+    id: "mentos",
+    name: "Mentos",
+    logo: "",
+    brandGuide: "",
+    website: "https://mentos.com.br/",
+    category: "lifestyle",
+  },
+  {
+    id: "h2bet",
+    name: "H2bet",
+    logo: "",
+    brandGuide: "",
+    website: "https://h2bet.com/",
+    category: "gaming",
+  },
+  {
+    id: "aztro",
+    name: "Aztro",
+    logo: "",
+    brandGuide: "",
+    website: "",
+    category: "lifestyle",
   },
 ];
 
