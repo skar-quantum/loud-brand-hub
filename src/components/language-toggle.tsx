@@ -10,7 +10,7 @@ export function LanguageToggle() {
   return (
     <button
       onClick={() => setLanguage(isEnglish ? "pt" : "en")}
-      className="flex w-full items-center justify-center px-3 py-2"
+      className="flex w-full items-center justify-start px-3 py-2"
       title={isEnglish ? "Mudar para Português" : "Switch to English"}
     >
       {/* Toggle Switch with label inside */}
