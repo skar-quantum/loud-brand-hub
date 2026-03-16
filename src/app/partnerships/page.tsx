@@ -69,7 +69,7 @@ const defaultPartners: Partner[] = [
   {
     id: "mentos",
     name: "Mentos",
-    logo: "",
+    logo: "/partners/mentos-logo.png",
     brandGuide: "",
     website: "https://mentos.com.br/",
     category: "lifestyle",
