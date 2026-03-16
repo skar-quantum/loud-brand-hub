@@ -17,8 +17,35 @@ interface Asset {
   formats: string[];
 }
 
-// Placeholder assets - will be replaced with Supabase data
-const defaultAssets: Asset[] = [];
+// Brand assets from LOUD design system
+const defaultAssets: Asset[] = [
+  // Patterns
+  ...Array.from({ length: 18 }, (_, i) => {
+    const num = String(i + 1).padStart(2, "0");
+    return {
+      id: `pattern-${num}`,
+      name: `Pattern ${num}`,
+      description: "LOUD brand pattern",
+      category: "patterns" as const,
+      preview: `/patterns/pattern-${num}.png`,
+      downloadUrl: `/patterns/pattern-${num}.svg`,
+      formats: ["SVG", "PNG"],
+    };
+  }),
+  // Graphic Assets
+  { id: "asset-01", name: "Asset 01", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-01.png", downloadUrl: "/assets/asset-01.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-02", name: "Mark", description: "Brand mark element", category: "elements" as const, preview: "/assets/asset-02-mark.png", downloadUrl: "/assets/asset-02-mark.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-03", name: "Asset 03", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-03.png", downloadUrl: "/assets/asset-03.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-04", name: "Asset 04", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-04.png", downloadUrl: "/assets/asset-04.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-05", name: "Asset 05", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-05.png", downloadUrl: "/assets/asset-05.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-06", name: "Asset 06", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-06.png", downloadUrl: "/assets/asset-06.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-07", name: "L O U D", description: "Spaced wordmark", category: "elements" as const, preview: "/assets/asset-07-loud.png", downloadUrl: "/assets/asset-07-loud.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-08", name: "Asset 08", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-08.png", downloadUrl: "/assets/asset-08.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-09", name: "Asset 09", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-09.png", downloadUrl: "/assets/asset-09.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-10", name: "Asset 10", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-10.png", downloadUrl: "/assets/asset-10.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-11", name: "Asset 11", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-11.png", downloadUrl: "/assets/asset-11.svg", formats: ["SVG", "PNG"] },
+  { id: "asset-12", name: "Asset 12", description: "Graphic element", category: "elements" as const, preview: "/assets/asset-12.png", downloadUrl: "/assets/asset-12.svg", formats: ["SVG", "PNG"] },
+];
 
 const categories = [
   { id: "all", icon: Layers },
