@@ -96,7 +96,10 @@ export function BrandAgent() {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to fetch");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to fetch");
+      }
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
@@ -124,12 +127,15 @@ export function BrandAgent() {
       }
     } catch (error) {
       console.error("Chat error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       setMessages([
         ...newMessages,
         {
           id: (Date.now() + 1).toString(),
           role: "assistant",
-          content: "Desculpa, tive um problema. Tenta de novo?",
+          content: errorMessage.includes("API key") 
+            ? "⚠️ A API do OpenAI não está configurada. Peça ao admin para adicionar OPENAI_API_KEY no Vercel."
+            : `Desculpa, tive um problema: ${errorMessage}. Tenta de novo?`,
         },
       ]);
     } finally {

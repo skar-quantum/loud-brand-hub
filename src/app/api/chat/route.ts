@@ -1,5 +1,6 @@
 import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
+import { NextResponse } from "next/server";
 
 export const maxDuration = 30;
 
@@ -141,35 +142,64 @@ IMPORTANTE:
 - Sempre responda com as informações corretas do brand guide acima`;
 
 export async function POST(req: Request) {
-  const { messages, image } = await req.json();
+  try {
+    const { messages, image } = await req.json();
 
-  // Build messages array for the API
-  const apiMessages = messages.map((m: { role: string; content: string; image?: string }) => {
-    // If this message has an image, create a multi-part content
-    if (m.image) {
+    // Check if API key is configured
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json(
+        { error: "OpenAI API key not configured" },
+        { status: 500 }
+      );
+    }
+
+    // Build messages array for the API
+    const apiMessages = messages.map((m: { role: string; content: string; image?: string }) => {
+      // If this message has an image, create a multi-part content
+      if (m.image) {
+        // Extract base64 data from data URL if needed
+        const imageData = m.image.startsWith("data:") 
+          ? m.image 
+          : `data:image/jpeg;base64,${m.image}`;
+        
+        return {
+          role: m.role,
+          content: [
+            { 
+              type: "text" as const, 
+              text: m.content || "Analise esta imagem e verifique a presença de patrocinadores da LOUD." 
+            },
+            { 
+              type: "image" as const, 
+              image: imageData 
+            },
+          ],
+        };
+      }
       return {
         role: m.role,
-        content: [
-          { type: "text", text: m.content || "Analise esta imagem e verifique a presença de patrocinadores da LOUD." },
-          { type: "image", image: m.image },
-        ],
+        content: m.content,
       };
-    }
-    return {
-      role: m.role,
-      content: m.content,
-    };
-  });
+    });
 
-  // Use GPT-4o for vision when there's an image, otherwise use mini
-  const hasImage = messages.some((m: { image?: string }) => m.image) || image;
-  const model = hasImage ? "gpt-4o" : "gpt-4o-mini";
+    // Use GPT-4o for vision when there's an image, otherwise use mini
+    const hasImage = messages.some((m: { image?: string }) => m.image) || image;
+    const model = hasImage ? "gpt-4o" : "gpt-4o-mini";
 
-  const result = streamText({
-    model: openai(model),
-    system: SYSTEM_PROMPT,
-    messages: apiMessages,
-  });
+    console.log(`[Brand Agent] Using model: ${model}, hasImage: ${hasImage}`);
 
-  return result.toTextStreamResponse();
+    const result = streamText({
+      model: openai(model),
+      system: SYSTEM_PROMPT,
+      messages: apiMessages,
+    });
+
+    return result.toTextStreamResponse();
+  } catch (error) {
+    console.error("[Brand Agent] Error:", error);
+    return NextResponse.json(
+      { error: "Failed to process request" },
+      { status: 500 }
+    );
+  }
 }

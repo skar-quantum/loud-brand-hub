@@ -52,7 +52,7 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 z-40 hidden h-screen w-64 border-r border-white/10 bg-black/50 backdrop-blur-xl lg:block">
       <div className="flex h-full flex-col">
         {/* Logo */}
-        <div className="flex items-center justify-between border-b border-white/10 p-4">
+        <div className="flex items-center border-b border-white/10 p-4">
           <div className="flex items-center gap-3">
             <img 
               src="/logo-loud.png" 
@@ -64,7 +64,6 @@ export function Sidebar() {
               BETA
             </span>
           </div>
-          <LanguageToggle />
         </div>
 
         {/* Navigation */}
@@ -177,6 +176,10 @@ export function Sidebar() {
 
         {/* Footer */}
         <div className="border-t border-white/10 p-3">
+          {/* Language Toggle */}
+          <div className="mb-2 px-3">
+            <LanguageToggle />
+          </div>
           <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-white/60 transition-colors hover:bg-white/5 hover:text-white">
             <MessageCircle className="h-4 w-4" />
             Share Feedback
