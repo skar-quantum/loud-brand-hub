@@ -10,23 +10,36 @@ export function LanguageToggle() {
   return (
     <button
       onClick={() => setLanguage(isEnglish ? "pt" : "en")}
-      className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm text-white/60 transition-colors hover:text-white"
+      className="flex w-full items-center justify-center px-3 py-2"
       title={isEnglish ? "Mudar para Português" : "Switch to English"}
     >
-      <div className="flex items-center gap-3">
-        <span className={isEnglish ? "text-white/40" : "text-white"}>PT</span>
+      {/* Toggle Switch with label inside */}
+      <motion.div 
+        className="relative flex h-8 w-[72px] items-center rounded-full px-1"
+        animate={{ 
+          backgroundColor: isEnglish ? "#00FF3B" : "rgba(255,255,255,0.15)" 
+        }}
+        transition={{ duration: 0.2 }}
+      >
+        {/* Label */}
+        <motion.span 
+          className="absolute text-xs font-semibold"
+          animate={{ 
+            x: isEnglish ? 10 : 40,
+            color: isEnglish ? "#000000" : "rgba(255,255,255,0.5)"
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          {isEnglish ? "EN" : "PT"}
+        </motion.span>
         
-        {/* Toggle Switch */}
-        <div className="relative h-5 w-9 rounded-full bg-white/10 p-0.5">
-          <motion.div
-            className="h-4 w-4 rounded-full bg-green-500"
-            animate={{ x: isEnglish ? 16 : 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          />
-        </div>
-        
-        <span className={isEnglish ? "text-white" : "text-white/40"}>EN</span>
-      </div>
+        {/* Circle */}
+        <motion.div
+          className="h-6 w-6 rounded-full bg-white shadow-md"
+          animate={{ x: isEnglish ? 40 : 0 }}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        />
+      </motion.div>
     </button>
   );
 }
