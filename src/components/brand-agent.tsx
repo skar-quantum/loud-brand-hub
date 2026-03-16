@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Pencil, Search, ChevronDown, ImageIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/language-context";
@@ -164,36 +164,43 @@ export function BrandAgent() {
           className="hidden"
         />
 
-        {/* Minimized State */}
-        {!isExpanded && (
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            onClick={() => setIsExpanded(true)}
-            className="flex w-full items-center justify-between rounded-2xl border border-white/20 bg-black/80 px-5 py-4 backdrop-blur-xl transition-all hover:border-white/40 hover:bg-black/90"
-          >
-            <div className="flex items-center gap-3">
-              <img 
-                src="/logo-loud.png" 
-                alt="LOUD" 
-                className="h-10 w-10 rounded-xl object-cover"
-              />
-              <div className="text-left">
-                <p className="font-medium">{t("agent.title")}</p>
-                <p className="text-xs text-white/50">{t("agent.clickToAsk")}</p>
+        <AnimatePresence mode="wait">
+          {/* Minimized State */}
+          {!isExpanded && (
+            <motion.button
+              key="minimized"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              onClick={() => setIsExpanded(true)}
+              className="flex w-full items-center justify-between rounded-2xl border border-white/20 bg-black/80 px-5 py-4 backdrop-blur-xl transition-all hover:border-white/40 hover:bg-black/90"
+            >
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/logo-loud.png" 
+                  alt="LOUD" 
+                  className="h-10 w-10 rounded-xl object-cover"
+                />
+                <div className="text-left">
+                  <p className="font-medium">{t("agent.title")}</p>
+                  <p className="text-xs text-white/50">{t("agent.clickToAsk")}</p>
+                </div>
               </div>
-            </div>
-            <ChevronDown className="h-5 w-5 rotate-180 text-white/50" />
-          </motion.button>
-        )}
+              <ChevronDown className="h-5 w-5 rotate-180 text-white/50" />
+            </motion.button>
+          )}
 
-        {/* Expanded State */}
-        {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-4 shadow-2xl"
-          >
+          {/* Expanded State */}
+          {isExpanded && (
+            <motion.div
+              key="expanded"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-4 shadow-2xl"
+            >
             {/* Header */}
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -329,6 +336,7 @@ export function BrandAgent() {
             </p>
           </motion.div>
         )}
+        </AnimatePresence>
       </div>
 
       {/* Gradient border effect */}
