@@ -244,25 +244,17 @@ export default function PartnershipsPage() {
                 {/* Name */}
                 <h3 className="mb-3 text-center font-semibold">{partner.name}</h3>
 
-                {/* Logo Variations Dropdown */}
+                {/* Logo Variations Dropdown + Download Button */}
                 {partner.logos && partner.logos.length > 0 && (
                   <div className="mb-3">
-                    <div className="relative">
+                    <div className="flex gap-2">
                       <select
-                        className="w-full appearance-none rounded-lg bg-white/10 px-3 py-2 pr-8 text-sm text-white/80 outline-none transition-colors hover:bg-white/15 focus:bg-white/15 cursor-pointer"
+                        id={`logo-select-${partner.id}`}
+                        className="flex-1 appearance-none rounded-lg bg-white/10 px-3 py-2 text-sm text-white/80 outline-none transition-colors hover:bg-white/15 focus:bg-white/15 cursor-pointer"
                         defaultValue=""
-                        onChange={(e) => {
-                          if (e.target.value) {
-                            const link = document.createElement('a');
-                            link.href = e.target.value;
-                            link.download = '';
-                            link.click();
-                            e.target.value = '';
-                          }
-                        }}
                       >
                         <option value="" disabled className="bg-zinc-900">
-                          {t("partnerships.downloadLogo") || "Baixar Logo"} ({partner.logos.length})
+                          {t("partnerships.selectLogo") || "Selecionar"} ({partner.logos.length})
                         </option>
                         {partner.logos.map((variation, idx) => (
                           <option key={idx} value={variation.file} className="bg-zinc-900">
@@ -270,7 +262,21 @@ export default function PartnershipsPage() {
                           </option>
                         ))}
                       </select>
-                      <Download className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+                      <button
+                        onClick={() => {
+                          const select = document.getElementById(`logo-select-${partner.id}`) as HTMLSelectElement;
+                          if (select?.value) {
+                            const link = document.createElement('a');
+                            link.href = select.value;
+                            link.download = '';
+                            link.click();
+                          }
+                        }}
+                        className="flex items-center justify-center rounded-lg bg-green-500/20 px-3 text-green-400 transition-colors hover:bg-green-500/30"
+                        title={t("partnerships.downloadLogo") || "Baixar"}
+                      >
+                        <Download className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
                 )}
