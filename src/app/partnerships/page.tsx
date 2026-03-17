@@ -7,10 +7,17 @@ import { Download, FileText, ExternalLink, Building2, Plus } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context";
 import { useAdmin } from "@/contexts/admin-context";
 
+interface LogoVariation {
+  name: string;
+  file: string;
+  format: "PNG" | "SVG";
+}
+
 interface Partner {
   id: string;
   name: string;
   logo: string;
+  logos?: LogoVariation[];
   brandGuide?: string;
   website?: string;
   category: "main" | "gaming" | "lifestyle" | "media";
@@ -22,6 +29,10 @@ const defaultPartners: Partner[] = [
     id: "poco",
     name: "POCO",
     logo: "/partners/poco-logo.png",
+    logos: [
+      { name: "Principal", file: "/partners/poco-logo.png", format: "PNG" },
+      { name: "Principal", file: "/partners/poco-logo.svg", format: "SVG" },
+    ],
     brandGuide: "/partners/poco-brandguide.pdf",
     website: "https://www.po.co/global/",
     category: "main",
@@ -30,6 +41,9 @@ const defaultPartners: Partner[] = [
     id: "samsung",
     name: "Samsung Odyssey",
     logo: "/partners/samsung-odyssey-logo.svg",
+    logos: [
+      { name: "Odyssey", file: "/partners/samsung-odyssey-logo.svg", format: "SVG" },
+    ],
     brandGuide: "/partners/samsung-brandguide.pdf",
     website: "https://www.samsung.com/br/monitors/gaming/",
     category: "gaming",
@@ -38,6 +52,9 @@ const defaultPartners: Partner[] = [
     id: "snickers",
     name: "Snickers",
     logo: "/partners/snickers-logo.svg",
+    logos: [
+      { name: "Principal", file: "/partners/snickers-logo.svg", format: "SVG" },
+    ],
     brandGuide: "/partners/snickers-brandguide.pdf",
     website: "https://snickers.com",
     category: "lifestyle",
@@ -45,7 +62,7 @@ const defaultPartners: Partner[] = [
   {
     id: "havan",
     name: "Havan",
-    logo: "", // AI file only - no web logo available
+    logo: "",
     brandGuide: "/partners/havan-brandguide.pdf",
     website: "https://www.havan.com.br/",
     category: "lifestyle",
@@ -54,6 +71,15 @@ const defaultPartners: Partner[] = [
     id: "cblol",
     name: "CBLOL",
     logo: "/partners/cblol-logo.png",
+    logos: [
+      { name: "Horizontal", file: "/partners/cblol-logo.png", format: "PNG" },
+      { name: "Horizontal", file: "/partners/cblol-logo-hor.svg", format: "SVG" },
+      { name: "Horizontal Black", file: "/partners/cblol-logo-black-h.png", format: "PNG" },
+      { name: "Vertical", file: "/partners/cblol-logo-ver.png", format: "PNG" },
+      { name: "Vertical", file: "/partners/cblol-logo-ver.svg", format: "SVG" },
+      { name: "Vertical Black", file: "/partners/cblol-logo-black.png", format: "PNG" },
+      { name: "Ícone", file: "/partners/cblol-icon.svg", format: "SVG" },
+    ],
     brandGuide: "",
     website: "https://lolesports.com/pt-BR/lol/cblol",
     category: "gaming",
@@ -70,6 +96,9 @@ const defaultPartners: Partner[] = [
     id: "mentos",
     name: "Mentos",
     logo: "/partners/mentos-logo.png",
+    logos: [
+      { name: "Principal", file: "/partners/mentos-logo.png", format: "PNG" },
+    ],
     brandGuide: "",
     website: "https://mentos.com.br/",
     category: "lifestyle",
@@ -215,18 +244,32 @@ export default function PartnershipsPage() {
                 {/* Name */}
                 <h3 className="mb-3 text-center font-semibold">{partner.name}</h3>
 
+                {/* Logo Variations */}
+                {partner.logos && partner.logos.length > 0 && (
+                  <div className="mb-3">
+                    <p className="mb-2 text-xs font-medium text-white/50 uppercase tracking-wide">
+                      {t("partnerships.logoVariations") || "Variações"}
+                    </p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {partner.logos.map((variation, idx) => (
+                        <a
+                          key={idx}
+                          href={variation.file}
+                          download
+                          className="flex items-center justify-between gap-1 rounded-md bg-white/5 px-2 py-1.5 text-xs transition-colors hover:bg-white/15"
+                        >
+                          <span className="truncate text-white/70">{variation.name}</span>
+                          <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-white/50">
+                            {variation.format}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Actions */}
                 <div className="flex flex-col gap-2">
-                  {partner.logo && (
-                    <a
-                      href={partner.logo}
-                      download
-                      className="flex items-center justify-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm transition-colors hover:bg-white/20"
-                    >
-                      <Download className="h-4 w-4" />
-                      {t("partnerships.downloadLogo")}
-                    </a>
-                  )}
                   {partner.brandGuide && (
                     <a
                       href={partner.brandGuide}
