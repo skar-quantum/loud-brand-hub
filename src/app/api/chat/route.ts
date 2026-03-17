@@ -244,13 +244,18 @@ export async function POST(req: Request) {
       if (m.image) {
         console.log(`[Brand Agent] Processing image, length: ${m.image.length}, prefix: ${m.image.substring(0, 50)}`);
         
-        // AI SDK accepts data URLs directly for images
-        let imageData = m.image;
+        // AI SDK expects PURE base64 for images (no data: prefix)
+        let imageBase64 = m.image;
         
-        // Ensure it's a proper data URL
-        if (!imageData.startsWith("data:")) {
-          imageData = `data:image/jpeg;base64,${imageData}`;
+        // Extract base64 from data URL if present
+        if (imageBase64.startsWith("data:")) {
+          const base64Part = imageBase64.split(",")[1];
+          if (base64Part) {
+            imageBase64 = base64Part;
+          }
         }
+        
+        console.log(`[Brand Agent] Image base64 length: ${imageBase64.length}, starts with: ${imageBase64.substring(0, 20)}`);
         
         return {
           role: m.role,
@@ -261,7 +266,7 @@ export async function POST(req: Request) {
             },
             { 
               type: "image" as const, 
-              image: imageData
+              image: imageBase64
             },
           ],
         };
