@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Download, FileText, ExternalLink, Building2, Plus } from "lucide-react";
+import { Download, FileText, ExternalLink, Building2, Plus, Eye } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { useAdmin } from "@/contexts/admin-context";
+import { PreviewModal } from "@/components/preview-modal";
 
 interface LogoVariation {
   name: string;
@@ -138,6 +139,13 @@ export default function PartnershipsPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedLogos, setSelectedLogos] = useState<Record<string, string>>({});
+  const [previewModal, setPreviewModal] = useState<{
+    isOpen: boolean;
+    type: "image" | "pdf";
+    src: string;
+    title: string;
+  }>({ isOpen: false, type: "image", src: "", title: "" });
   const { t } = useLanguage();
   const { isAdmin } = useAdmin();
 
@@ -153,8 +161,32 @@ export default function PartnershipsPage() {
       ? partners
       : partners.filter((p) => p.category === selectedCategory);
 
+  const handleLogoSelect = (partnerId: string, logoFile: string) => {
+    setSelectedLogos((prev) => ({ ...prev, [partnerId]: logoFile }));
+  };
+
+  const openImagePreview = (src: string, title: string) => {
+    setPreviewModal({ isOpen: true, type: "image", src, title });
+  };
+
+  const openPdfPreview = (src: string, title: string) => {
+    setPreviewModal({ isOpen: true, type: "pdf", src, title });
+  };
+
+  const closePreview = () => {
+    setPreviewModal((prev) => ({ ...prev, isOpen: false }));
+  };
+
   return (
     <div className="p-4 lg:p-8 xl:p-12">
+      <PreviewModal
+        isOpen={previewModal.isOpen}
+        onClose={closePreview}
+        type={previewModal.type}
+        src={previewModal.src}
+        title={previewModal.title}
+      />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -225,11 +257,19 @@ export default function PartnershipsPage() {
                 transition={{ delay: i * 0.05 }}
                 className="group rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:border-white/20 hover:bg-white/10"
               >
-                {/* Logo */}
-                <div className="mb-4 flex h-24 items-center justify-center rounded-lg bg-white/10 p-4">
-                  {partner.logo ? (
+                {/* Logo Preview Area */}
+                <div
+                  className="mb-4 flex h-24 cursor-pointer items-center justify-center rounded-lg bg-white/10 p-4 transition-all hover:bg-white/15"
+                  onClick={() => {
+                    const logoToPreview = selectedLogos[partner.id] || partner.logo;
+                    if (logoToPreview) {
+                      openImagePreview(logoToPreview, partner.name);
+                    }
+                  }}
+                >
+                  {(selectedLogos[partner.id] || partner.logo) ? (
                     <img
-                      src={partner.logo}
+                      src={selectedLogos[partner.id] || partner.logo}
                       alt={partner.name}
                       className="max-h-full max-w-full object-contain"
                       onError={(e) => {
@@ -238,22 +278,29 @@ export default function PartnershipsPage() {
                       }}
                     />
                   ) : null}
-                  <Building2 className={`h-10 w-10 text-white/30 ${partner.logo ? "hidden" : ""}`} />
+                  <Building2 className={`h-10 w-10 text-white/30 ${(selectedLogos[partner.id] || partner.logo) ? "hidden" : ""}`} />
+                  {/* Preview hint overlay */}
+                  {(selectedLogos[partner.id] || partner.logo) && (
+                    <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+                      <Eye className="h-6 w-6 text-white" />
+                    </div>
+                  )}
                 </div>
 
                 {/* Name */}
                 <h3 className="mb-3 text-center font-semibold">{partner.name}</h3>
 
-                {/* Logo Variations Dropdown + Download Button */}
+                {/* Logo Variations Dropdown + Buttons */}
                 {partner.logos && partner.logos.length > 0 && (
                   <div className="mb-3">
                     <div className="flex gap-2">
                       <select
                         id={`logo-select-${partner.id}`}
                         className="flex-1 appearance-none rounded-lg bg-white/10 px-3 py-2 text-sm text-white/80 outline-none transition-colors hover:bg-white/15 focus:bg-white/15 cursor-pointer"
-                        defaultValue=""
+                        value={selectedLogos[partner.id] || ""}
+                        onChange={(e) => handleLogoSelect(partner.id, e.target.value)}
                       >
-                        <option value="" disabled className="bg-zinc-900">
+                        <option value="" className="bg-zinc-900">
                           {t("partnerships.selectLogo") || "Selecionar"} ({partner.logos.length})
                         </option>
                         {partner.logos.map((variation, idx) => (
@@ -262,18 +309,34 @@ export default function PartnershipsPage() {
                           </option>
                         ))}
                       </select>
+                      {/* Preview button */}
                       <button
                         onClick={() => {
-                          const select = document.getElementById(`logo-select-${partner.id}`) as HTMLSelectElement;
-                          if (select?.value) {
+                          const logoToPreview = selectedLogos[partner.id] || partner.logo;
+                          if (logoToPreview) {
+                            openImagePreview(logoToPreview, partner.name);
+                          }
+                        }}
+                        className="flex items-center justify-center rounded-lg bg-white/10 px-3 text-white/70 transition-colors hover:bg-white/20 hover:text-white disabled:opacity-50"
+                        title="Preview"
+                        disabled={!selectedLogos[partner.id] && !partner.logo}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </button>
+                      {/* Download button */}
+                      <button
+                        onClick={() => {
+                          const logoToDownload = selectedLogos[partner.id];
+                          if (logoToDownload) {
                             const link = document.createElement('a');
-                            link.href = select.value;
+                            link.href = logoToDownload;
                             link.download = '';
                             link.click();
                           }
                         }}
-                        className="flex items-center justify-center rounded-lg bg-green-500/20 px-3 text-green-400 transition-colors hover:bg-green-500/30"
+                        className="flex items-center justify-center rounded-lg bg-green-500/20 px-3 text-green-400 transition-colors hover:bg-green-500/30 disabled:opacity-50"
                         title={t("partnerships.downloadLogo") || "Baixar"}
+                        disabled={!selectedLogos[partner.id]}
                       >
                         <Download className="h-4 w-4" />
                       </button>
@@ -284,14 +347,13 @@ export default function PartnershipsPage() {
                 {/* Actions */}
                 <div className="flex flex-col gap-2">
                   {partner.brandGuide && (
-                    <a
-                      href={partner.brandGuide}
-                      download
+                    <button
+                      onClick={() => openPdfPreview(partner.brandGuide!, `${partner.name} - Brand Guide`)}
                       className="flex items-center justify-center gap-2 rounded-lg bg-green-500/20 px-3 py-2 text-sm text-green-400 transition-colors hover:bg-green-500/30"
                     >
                       <FileText className="h-4 w-4" />
                       {t("partnerships.brandGuide")}
-                    </a>
+                    </button>
                   )}
                   {partner.website && (
                     <a

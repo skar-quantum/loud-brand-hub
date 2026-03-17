@@ -1,6 +1,6 @@
 "use client";
 
-import { Download } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AssetCardProps {
@@ -11,6 +11,7 @@ interface AssetCardProps {
   variant?: "light" | "dark" | "color";
   className?: string;
   downloadUrl?: string;
+  onPreview?: () => void;
 }
 
 export function AssetCard({
@@ -21,6 +22,7 @@ export function AssetCard({
   variant = "dark",
   className,
   downloadUrl,
+  onPreview,
 }: AssetCardProps) {
   const handleDownload = (format: string) => {
     if (!downloadUrl) return;
@@ -47,13 +49,21 @@ export function AssetCard({
       {/* Preview */}
       <div
         className={cn(
-          "flex h-32 items-center justify-center p-6",
+          "relative flex h-32 items-center justify-center p-6 transition-all",
           variant === "light" && "bg-white",
           variant === "dark" && "bg-zinc-900",
-          variant === "color" && "bg-gradient-to-br from-green-500 to-green-600"
+          variant === "color" && "bg-gradient-to-br from-green-500 to-green-600",
+          onPreview && "cursor-pointer"
         )}
+        onClick={onPreview}
       >
         {preview}
+        {/* Hover overlay with eye icon */}
+        {onPreview && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+            <Eye className="h-6 w-6 text-white" />
+          </div>
+        )}
       </div>
 
       {/* Info */}

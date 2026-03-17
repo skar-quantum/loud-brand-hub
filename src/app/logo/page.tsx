@@ -1,13 +1,37 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { AssetCard } from "@/components/asset-card";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { PreviewModal } from "@/components/preview-modal";
 
 export default function LogoPage() {
+  const [previewModal, setPreviewModal] = useState<{
+    isOpen: boolean;
+    src: string;
+    title: string;
+  }>({ isOpen: false, src: "", title: "" });
+
+  const openPreview = (src: string, title: string) => {
+    setPreviewModal({ isOpen: true, src, title });
+  };
+
+  const closePreview = () => {
+    setPreviewModal((prev) => ({ ...prev, isOpen: false }));
+  };
+
   return (
     <div className="p-4 lg:p-8 xl:p-12">
+      <PreviewModal
+        isOpen={previewModal.isOpen}
+        onClose={closePreview}
+        type="image"
+        src={previewModal.src}
+        title={previewModal.title}
+      />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -36,6 +60,7 @@ export default function LogoPage() {
               variant="light"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/seal-black.svg"
+              onPreview={() => openPreview("/logos/seal-black.png", "Seal — Black")}
               preview={
                 <img src="/logos/seal-black.png" alt="LOUD Seal Black" className="h-16 w-auto" />
               }
@@ -46,6 +71,7 @@ export default function LogoPage() {
               variant="dark"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/seal-white.svg"
+              onPreview={() => openPreview("/logos/seal-white.png", "Seal — White")}
               preview={
                 <img src="/logos/seal-white.png" alt="LOUD Seal White" className="h-16 w-auto" />
               }
@@ -56,6 +82,7 @@ export default function LogoPage() {
               variant="dark"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/seal-green.svg"
+              onPreview={() => openPreview("/logos/seal-green.png", "Seal — Green")}
               preview={
                 <img src="/logos/seal-green.png" alt="LOUD Seal Green" className="h-16 w-auto" />
               }
@@ -73,6 +100,7 @@ export default function LogoPage() {
               variant="dark"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/symbol-green.svg"
+              onPreview={() => openPreview("/logos/symbol-green.png", "Symbol — Green")}
               preview={
                 <img src="/logos/symbol-green.png" alt="LOUD Symbol Green" className="h-16 w-auto" />
               }
@@ -83,6 +111,7 @@ export default function LogoPage() {
               variant="light"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/symbol-black.svg"
+              onPreview={() => openPreview("/logos/symbol-black.png", "Symbol — Black")}
               preview={
                 <img src="/logos/symbol-black.png" alt="LOUD Symbol Black" className="h-16 w-auto" />
               }
@@ -93,6 +122,7 @@ export default function LogoPage() {
               variant="dark"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/symbol-white.svg"
+              onPreview={() => openPreview("/logos/symbol-white.png", "Symbol — White")}
               preview={
                 <img src="/logos/symbol-white.png" alt="LOUD Symbol White" className="h-16 w-auto" />
               }
@@ -198,6 +228,7 @@ export default function LogoPage() {
               variant="light"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/wordmark-black.svg"
+              onPreview={() => openPreview("/logos/wordmark-black.png", "Wordmark — Black")}
               preview={
                 <img src="/logos/wordmark-black.png" alt="LOUD Wordmark Black" className="h-8 w-auto" />
               }
@@ -208,6 +239,7 @@ export default function LogoPage() {
               variant="dark"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/wordmark-white.svg"
+              onPreview={() => openPreview("/logos/wordmark-white.png", "Wordmark — White")}
               preview={
                 <img src="/logos/wordmark-white.png" alt="LOUD Wordmark White" className="h-8 w-auto" />
               }
@@ -218,6 +250,7 @@ export default function LogoPage() {
               variant="dark"
               formats={["SVG", "PNG"]}
               downloadUrl="/logos/wordmark-green.svg"
+              onPreview={() => openPreview("/logos/wordmark-green.png", "Wordmark — Green")}
               preview={
                 <img src="/logos/wordmark-green.png" alt="LOUD Wordmark Green" className="h-8 w-auto" />
               }
