@@ -244,26 +244,33 @@ export default function PartnershipsPage() {
                 {/* Name */}
                 <h3 className="mb-3 text-center font-semibold">{partner.name}</h3>
 
-                {/* Logo Variations */}
+                {/* Logo Variations Dropdown */}
                 {partner.logos && partner.logos.length > 0 && (
                   <div className="mb-3">
-                    <p className="mb-2 text-xs font-medium text-white/50 uppercase tracking-wide">
-                      {t("partnerships.logoVariations") || "Variações"}
-                    </p>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {partner.logos.map((variation, idx) => (
-                        <a
-                          key={idx}
-                          href={variation.file}
-                          download
-                          className="flex items-center justify-between gap-1 rounded-md bg-white/5 px-2 py-1.5 text-xs transition-colors hover:bg-white/15"
-                        >
-                          <span className="truncate text-white/70">{variation.name}</span>
-                          <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-white/50">
-                            {variation.format}
-                          </span>
-                        </a>
-                      ))}
+                    <div className="relative">
+                      <select
+                        className="w-full appearance-none rounded-lg bg-white/10 px-3 py-2 pr-8 text-sm text-white/80 outline-none transition-colors hover:bg-white/15 focus:bg-white/15 cursor-pointer"
+                        defaultValue=""
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            const link = document.createElement('a');
+                            link.href = e.target.value;
+                            link.download = '';
+                            link.click();
+                            e.target.value = '';
+                          }
+                        }}
+                      >
+                        <option value="" disabled className="bg-zinc-900">
+                          {t("partnerships.downloadLogo") || "Baixar Logo"} ({partner.logos.length})
+                        </option>
+                        {partner.logos.map((variation, idx) => (
+                          <option key={idx} value={variation.file} className="bg-zinc-900">
+                            {variation.name} • {variation.format}
+                          </option>
+                        ))}
+                      </select>
+                      <Download className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
                     </div>
                   </div>
                 )}
