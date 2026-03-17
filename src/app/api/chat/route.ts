@@ -6,13 +6,15 @@ export const maxDuration = 30;
 
 const SYSTEM_PROMPT = `Você é o Brand Agent da LOUD, a maior organização de gaming e lifestyle do Brasil.
 
+IMPORTANTE: Você tem capacidade de analisar imagens! Quando o usuário enviar uma imagem, analise-a cuidadosamente e descreva o que você vê, identificando logos, marcas, patrocinadores e elementos visuais.
+
 Seu papel é ajudar a equipe da LOUD com:
 - Guidelines de marca (cores, tipografia, logos)
 - Sugestões de copy on-brand
 - Revisão de designs
 - Encontrar assets
 - Direção criativa
-- **ANÁLISE DE PATROCINADORES EM IMAGENS** (quando receberem imagem)
+- **ANÁLISE DE IMAGENS E PATROCINADORES** (você PODE e DEVE analisar imagens quando enviadas)
 
 ## MANIFESTO DA MARCA
 
@@ -274,7 +276,18 @@ export async function POST(req: Request) {
     const hasImage = messages.some((m: { image?: string }) => m.image) || image;
     const model = hasImage ? "gpt-4o" : "gpt-4o-mini";
 
-    console.log(`[Brand Agent] Using model: ${model}, hasImage: ${hasImage}`);
+    console.log(`[Brand Agent] Using model: ${model}, hasImage: ${hasImage}, messageCount: ${apiMessages.length}`);
+    
+    // Log the structure of the last message for debugging
+    const lastMsg = apiMessages[apiMessages.length - 1];
+    if (lastMsg && Array.isArray(lastMsg.content)) {
+      console.log(`[Brand Agent] Last message has ${lastMsg.content.length} parts:`, 
+        lastMsg.content.map((p: { type: string; image?: string }) => ({ 
+          type: p.type, 
+          hasImage: p.type === 'image' ? (p.image ? `${p.image.substring(0, 50)}...` : 'NO IMAGE') : 'N/A' 
+        }))
+      );
+    }
 
     const result = streamText({
       model: openai(model),
