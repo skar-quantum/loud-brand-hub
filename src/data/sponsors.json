@@ -1,0 +1,79 @@
+{
+  "lastUpdated": "2026-02-12",
+  "source": "https://docs.google.com/spreadsheets/d/1PuQW_NBbBEI_kxCKocvaOD5c0GS1o6OgeeK2D0vKbY0",
+  
+  "networks": {
+    "LOUDgg": ["Snickers", "Aztro", "H2Bet", "Uniasselvi"],
+    "LOUD LOL": ["Snickers", "Aztro", "H2Bet", "Uniasselvi"],
+    "LOUD Rainbow6": ["Snickers", "Aztro", "H2Bet", "Uniasselvi"],
+    "LOUD Valorant": ["Snickers", "Aztro", "H2Bet"],
+    "LOUD Brawl Stars": ["Snickers", "Aztro", "H2Bet", "Uniasselvi"],
+    "LOUD FreeFire": ["Snickers", "Aztro", "H2Bet", "Uniasselvi"],
+    "Loud Sports Club": ["Uniasselvi"]
+  },
+
+  "influencers": {
+    "Bak": ["Snickers"],
+    "Brabox": ["H2Bet"],
+    "CaioX": ["Snickers"],
+    "Castrin": ["Adidas", "Snickers"],
+    "Coreano": [],
+    "Coringa": ["H2Bet", "Aztro", "Snickers"],
+    "GabePeixe": ["H2Bet"],
+    "Nayu": [],
+    "PlayHard": ["Samsung", "AOC", "Uniasselvi"],
+    "Voltan": ["Snickers"],
+    "Yayah": [],
+    "VTzim": []
+  },
+
+  "athletes": {
+    "Free Fire": {
+      "Trap": ["Snickers", "Aztro", "Uniasselvi"],
+      "Nickz": ["Snickers", "Aztro", "Uniasselvi"],
+      "Bzp": ["Snickers", "Aztro", "Uniasselvi"],
+      "Guaxa": ["Snickers", "Aztro", "Uniasselvi"],
+      "Hak": ["Snickers", "Aztro", "Uniasselvi"],
+      "_default": ["Snickers", "Aztro", "Uniasselvi"]
+    },
+    "League of Legends": {
+      "Xyno": ["Snickers", "Aztro", "Uniasselvi"],
+      "YoungJae": ["Snickers", "Aztro", "Uniasselvi"],
+      "Jean Mago": ["Snickers", "Aztro", "Uniasselvi"],
+      "Bull": ["Snickers", "Aztro", "Uniasselvi"],
+      "Redbert": ["Snickers", "Aztro", "Uniasselvi"],
+      "Raise": ["Snickers", "Aztro", "Uniasselvi"],
+      "Sephis": ["Snickers", "Aztro", "Uniasselvi"],
+      "_default": ["Snickers", "Aztro", "Uniasselvi"]
+    },
+    "Valorant": {
+      "Cauanzin": ["Snickers", "Aztro"],
+      "pANcada": ["Snickers", "Aztro"],
+      "Lukxo": ["Snickers", "Aztro"],
+      "Darker": ["Snickers", "Aztro"],
+      "Virtty": ["Snickers", "Aztro"],
+      "Romanilly": ["Snickers", "Aztro", "Uniasselvi"],
+      "_default": ["Snickers", "Aztro"]
+    },
+    "Brawl Stars": {
+      "KaioDog": ["Snickers", "Aztro", "Uniasselvi"],
+      "FireCrow": ["Snickers", "Aztro", "Uniasselvi"],
+      "Edinho": ["Snickers", "Aztro", "Uniasselvi"],
+      "_default": ["Snickers", "Aztro", "Uniasselvi"]
+    },
+    "Rainbow6": {
+      "Bassetto": ["Snickers", "Aztro", "Uniasselvi"],
+      "Flastry": ["Snickers", "Aztro", "Uniasselvi"],
+      "Live": ["Snickers", "Aztro", "Uniasselvi"],
+      "Peres": ["Snickers", "Aztro", "Uniasselvi"],
+      "Stk": ["Snickers", "Aztro", "Uniasselvi"],
+      "_default": ["Snickers", "Aztro", "Uniasselvi"]
+    },
+    "Fortnite": {
+      "Diguera": ["Snickers", "Aztro", "Uniasselvi"],
+      "_default": ["Snickers", "Aztro", "Uniasselvi"]
+    }
+  },
+
+  "allSponsors": ["Snickers", "Aztro", "H2Bet", "Uniasselvi", "Samsung", "AOC", "Adidas", "POCO", "Havan", "Mentos", "CBLOL"]
+}
