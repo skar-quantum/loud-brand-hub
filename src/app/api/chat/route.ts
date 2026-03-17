@@ -222,10 +222,14 @@ IMPORTANTE:
 
 export async function POST(req: Request) {
   try {
-    const { messages, image } = await req.json();
+    const body = await req.json();
+    const { messages, image } = body;
+
+    console.log(`[Brand Agent] Request received, messages: ${messages?.length}, hasImage: ${!!image}`);
 
     // Check if API key is configured
     if (!process.env.OPENAI_API_KEY) {
+      console.error("[Brand Agent] OPENAI_API_KEY not configured");
       return NextResponse.json(
         { error: "OpenAI API key not configured" },
         { status: 500 }
@@ -285,8 +289,9 @@ export async function POST(req: Request) {
     return result.toTextStreamResponse();
   } catch (error) {
     console.error("[Brand Agent] Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to process request" },
+      { error: `Failed to process request: ${errorMessage}` },
       { status: 500 }
     );
   }
