@@ -14,6 +14,61 @@ const getSuggestions = (t: (key: string) => string) => [
   { icon: ImageIcon, label: t("agent.checkSponsors") },
 ];
 
+// Image compression settings
+const MAX_WIDTH = 1920;
+const MAX_HEIGHT = 1920;
+const QUALITY = 0.8;
+const MAX_SIZE_MB = 1;
+
+async function compressImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Calculate new dimensions
+        let { width, height } = img;
+        
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+          const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        // Create canvas and draw resized image
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Failed to get canvas context"));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Try different quality levels to get under MAX_SIZE_MB
+        let quality = QUALITY;
+        let result = canvas.toDataURL("image/jpeg", quality);
+        
+        // If still too large, reduce quality iteratively
+        while (result.length > MAX_SIZE_MB * 1024 * 1024 * 1.37 && quality > 0.3) {
+          quality -= 0.1;
+          result = canvas.toDataURL("image/jpeg", quality);
+        }
+
+        console.log(`[Image Compression] Original: ${file.size / 1024}KB, Compressed: ${result.length / 1024}KB, Quality: ${quality.toFixed(1)}`);
+        resolve(result);
+      };
+      img.onerror = () => reject(new Error("Failed to load image"));
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
+}
+
 interface Message {
   id: string;
   role: "user" | "assistant";
@@ -43,15 +98,39 @@ export function BrandAgent() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [isCompressing, setIsCompressing] = useState(false);
+
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setIsCompressing(true);
+      
+      try {
+        // Compress if larger than 500KB
+        if (file.size > 500 * 1024) {
+          console.log(`[Image] Compressing ${file.name} (${(file.size / 1024).toFixed(0)}KB)...`);
+          const compressed = await compressImage(file);
+          setSelectedImage(compressed);
+        } else {
+          // Small enough, just convert to base64
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setSelectedImage(reader.result as string);
+          };
+          reader.readAsDataURL(file);
+        }
+      } catch (error) {
+        console.error("[Image] Compression failed:", error);
+        // Fallback to original
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSelectedImage(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } finally {
+        setIsCompressing(false);
+      }
     }
   };
 
@@ -281,8 +360,16 @@ export function BrandAgent() {
               </div>
             )}
 
+            {/* Image Compressing Indicator */}
+            {isCompressing && (
+              <div className="mb-3 flex items-center gap-2 text-sm text-white/60">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-green-500 border-t-transparent" />
+                Comprimindo imagem...
+              </div>
+            )}
+
             {/* Selected Image Preview */}
-            {selectedImage && (
+            {selectedImage && !isCompressing && (
               <div className="mb-3 relative inline-block">
                 <img 
                   src={selectedImage} 
@@ -295,6 +382,9 @@ export function BrandAgent() {
                 >
                   <X className="h-3 w-3" />
                 </button>
+                <div className="absolute -bottom-1 -left-1 rounded bg-black/80 px-1.5 py-0.5 text-[10px] text-green-400">
+                  {(selectedImage.length / 1024).toFixed(0)}KB
+                </div>
               </div>
             )}
 
