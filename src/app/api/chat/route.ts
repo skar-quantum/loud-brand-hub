@@ -289,13 +289,22 @@ export async function POST(req: Request) {
       );
     }
 
-    const result = streamText({
-      model: openai(model),
-      system: SYSTEM_PROMPT,
-      messages: apiMessages,
-    });
+    try {
+      const result = streamText({
+        model: openai(model),
+        system: SYSTEM_PROMPT,
+        messages: apiMessages,
+        onError: (error) => {
+          console.error("[Brand Agent] Stream error:", error);
+        },
+      });
 
-    return result.toTextStreamResponse();
+      return result.toTextStreamResponse();
+    } catch (streamError) {
+      console.error("[Brand Agent] StreamText error:", streamError);
+      const errMsg = streamError instanceof Error ? streamError.message : "Stream error";
+      return new Response(`Erro ao processar: ${errMsg}`, { status: 500 });
+    }
   } catch (error) {
     console.error("[Brand Agent] Error:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
