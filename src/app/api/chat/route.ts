@@ -1,8 +1,8 @@
 import { openai } from "@ai-sdk/openai";
-import { streamText } from "ai";
+import { streamText, generateText } from "ai";
 import { NextResponse } from "next/server";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 const SYSTEM_PROMPT = `Você é o Brand Agent da LOUD, a maior organização de gaming e lifestyle do Brasil.
 
@@ -290,6 +290,22 @@ export async function POST(req: Request) {
     }
 
     try {
+      // For image requests, use generateText (more reliable for vision)
+      if (hasImage) {
+        console.log("[Brand Agent] Using generateText for image analysis");
+        const result = await generateText({
+          model: openai(model),
+          system: SYSTEM_PROMPT,
+          messages: apiMessages,
+        });
+        console.log("[Brand Agent] generateText result:", result.text?.substring(0, 100));
+        return new Response(result.text, { 
+          status: 200,
+          headers: { "Content-Type": "text/plain; charset=utf-8" }
+        });
+      }
+
+      // For text-only, use streaming
       const result = streamText({
         model: openai(model),
         system: SYSTEM_PROMPT,
@@ -301,9 +317,12 @@ export async function POST(req: Request) {
 
       return result.toTextStreamResponse();
     } catch (streamError) {
-      console.error("[Brand Agent] StreamText error:", streamError);
+      console.error("[Brand Agent] StreamText/GenerateText error:", streamError);
       const errMsg = streamError instanceof Error ? streamError.message : "Stream error";
-      return new Response(`Erro ao processar: ${errMsg}`, { status: 500 });
+      return new Response(`Erro ao processar imagem: ${errMsg}`, { 
+        status: 200,
+        headers: { "Content-Type": "text/plain; charset=utf-8" }
+      });
     }
   } catch (error) {
     console.error("[Brand Agent] Error:", error);
