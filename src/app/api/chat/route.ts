@@ -240,18 +240,14 @@ export async function POST(req: Request) {
     const apiMessages = messages.map((m: { role: string; content: string; image?: string }) => {
       // If this message has an image, create a multi-part content
       if (m.image) {
-        // AI SDK expects either:
-        // 1. A URL string (http/https)
-        // 2. A base64 string WITHOUT data: prefix
-        // 3. A Uint8Array/Buffer
-        // Extract pure base64 from data URL
+        console.log(`[Brand Agent] Processing image, length: ${m.image.length}, prefix: ${m.image.substring(0, 50)}`);
+        
+        // AI SDK accepts data URLs directly for images
         let imageData = m.image;
-        if (m.image.startsWith("data:")) {
-          // Extract base64 part after the comma
-          const base64Part = m.image.split(",")[1];
-          if (base64Part) {
-            imageData = base64Part;
-          }
+        
+        // Ensure it's a proper data URL
+        if (!imageData.startsWith("data:")) {
+          imageData = `data:image/jpeg;base64,${imageData}`;
         }
         
         return {
@@ -259,11 +255,11 @@ export async function POST(req: Request) {
           content: [
             { 
               type: "text" as const, 
-              text: m.content || "Analise esta imagem e verifique a presença de patrocinadores da LOUD." 
+              text: m.content || "Analise esta imagem e identifique todos os logos de patrocinadores visíveis. Liste quais patrocinadores estão presentes." 
             },
             { 
               type: "image" as const, 
-              image: imageData 
+              image: imageData
             },
           ],
         };
