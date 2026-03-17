@@ -159,6 +159,10 @@ export function BrandAgent() {
     const imageToSend = selectedImage;
     setSelectedImage(null);
     setImageFile(null);
+    // Reset file input to allow re-selecting the same file
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
     setIsLoading(true);
 
     try {
