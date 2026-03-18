@@ -1,4 +1,4 @@
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { streamText, generateText } from "ai";
 import { NextResponse } from "next/server";
 
@@ -237,10 +237,10 @@ export async function POST(req: Request) {
     console.log(`[Brand Agent] Request received, messages: ${messages?.length}, hasImage: ${!!image}`);
 
     // Check if API key is configured
-    if (!process.env.OPENAI_API_KEY) {
-      console.error("[Brand Agent] OPENAI_API_KEY not configured");
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+      console.error("[Brand Agent] GOOGLE_GENERATIVE_AI_API_KEY not configured");
       return NextResponse.json(
-        { error: "OpenAI API key not configured" },
+        { error: "Google AI API key not configured" },
         { status: 500 }
       );
     }
@@ -284,9 +284,9 @@ export async function POST(req: Request) {
       };
     });
 
-    // Use GPT-4o for vision when there's an image, otherwise use mini
+    // Gemini 2.0 Flash supports both text and vision
     const hasImage = messages.some((m: { image?: string }) => m.image) || image;
-    const model = hasImage ? "gpt-4o" : "gpt-4o-mini";
+    const model = "gemini-2.0-flash";
 
     console.log(`[Brand Agent] Using model: ${model}, hasImage: ${hasImage}, messageCount: ${apiMessages.length}`);
     
@@ -306,7 +306,7 @@ export async function POST(req: Request) {
       if (hasImage) {
         console.log("[Brand Agent] Using generateText for image analysis");
         const result = await generateText({
-          model: openai(model),
+          model: google(model),
           system: SYSTEM_PROMPT,
           messages: apiMessages,
         });
@@ -319,7 +319,7 @@ export async function POST(req: Request) {
 
       // For text-only, use streaming
       const result = streamText({
-        model: openai(model),
+        model: google(model),
         system: SYSTEM_PROMPT,
         messages: apiMessages,
         onError: (error) => {
@@ -331,7 +331,7 @@ export async function POST(req: Request) {
     } catch (streamError) {
       console.error("[Brand Agent] StreamText/GenerateText error:", streamError);
       const errMsg = streamError instanceof Error ? streamError.message : "Stream error";
-      return new Response(`Erro ao processar imagem: ${errMsg}`, { 
+      return new Response(`Erro ao processar: ${errMsg}`, { 
         status: 200,
         headers: { "Content-Type": "text/plain; charset=utf-8" }
       });
