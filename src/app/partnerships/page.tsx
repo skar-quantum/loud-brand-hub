@@ -259,7 +259,7 @@ export default function PartnershipsPage() {
               >
                 {/* Logo Preview Area */}
                 <div
-                  className="mb-4 flex h-24 cursor-pointer items-center justify-center rounded-lg bg-white/10 p-4 transition-all hover:bg-white/15"
+                  className="relative mb-4 flex h-24 cursor-pointer items-center justify-center rounded-lg bg-white/10 p-4 transition-all hover:bg-white/15"
                   onClick={() => {
                     const logoToPreview = selectedLogos[partner.id] || partner.logo;
                     if (logoToPreview) {
