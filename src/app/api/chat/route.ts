@@ -289,7 +289,7 @@ export async function POST(req: Request) {
 
     // Use Gemini 2.5 Flash (latest model with vision support)
     const hasImage = messages.some((m: { image?: string }) => m.image) || image;
-    const model = "gemini-2.5-flash-preview-05-20";
+    const model = "gemini-2.5-flash";
 
     console.log(`[Brand Agent] Using model: ${model}, hasImage: ${hasImage}, messageCount: ${apiMessages.length}`);
     
