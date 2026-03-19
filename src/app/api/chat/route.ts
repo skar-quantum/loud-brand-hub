@@ -237,13 +237,16 @@ export async function POST(req: Request) {
     console.log(`[Brand Agent] Request received, messages: ${messages?.length}, hasImage: ${!!image}`);
 
     // Check if API key is configured
-    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    if (!apiKey) {
       console.error("[Brand Agent] GOOGLE_GENERATIVE_AI_API_KEY not configured");
-      return NextResponse.json(
-        { error: "Google AI API key not configured" },
-        { status: 500 }
-      );
+      return new Response("⚠️ API key não configurada. Entre em contato com o admin.", {
+        status: 200,
+        headers: { "Content-Type": "text/plain; charset=utf-8" }
+      });
     }
+    
+    console.log("[Brand Agent] API key found, length:", apiKey.length);
 
     // Build messages array for the API
     const apiMessages = messages.map((m: { role: string; content: string; image?: string }) => {
@@ -317,17 +320,21 @@ export async function POST(req: Request) {
         });
       }
 
-      // For text-only, use streaming
-      const result = streamText({
+      // For text-only, also use generateText for reliability
+      console.log("[Brand Agent] Using generateText for text message");
+      const result = await generateText({
         model: google(model),
         system: SYSTEM_PROMPT,
         messages: apiMessages,
-        onError: (error) => {
-          console.error("[Brand Agent] Stream error:", error);
-        },
       });
-
-      return result.toTextStreamResponse();
+      
+      const responseText = result.text || "Desculpa, não consegui gerar uma resposta. Tenta de novo?";
+      console.log("[Brand Agent] Response generated, length:", responseText.length);
+      
+      return new Response(responseText, { 
+        status: 200,
+        headers: { "Content-Type": "text/plain; charset=utf-8" }
+      });
     } catch (streamError) {
       console.error("[Brand Agent] StreamText/GenerateText error:", streamError);
       const errMsg = streamError instanceof Error ? streamError.message : "Stream error";
