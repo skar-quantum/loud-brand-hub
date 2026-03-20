@@ -13,10 +13,6 @@ import {
   Layers,
   Brush,
   Building2,
-  Mail,
-  UserPlus,
-  LayoutTemplate,
-  Sparkles,
   Settings,
   Handshake,
 } from "lucide-react";
@@ -34,13 +30,7 @@ const navigation = {
   ],
   subBrands: [{ name: "LOUD Sports Club", href: "/sub-brands/loud-sports-club", icon: Building2 }],
   tools: [
-    { name: "Email Signature", href: "/tools/email-signature", icon: Mail },
-    { name: "New Team Member", href: "/tools/new-member", icon: UserPlus },
     { name: "Admin", href: "/admin", icon: Settings },
-  ],
-  resources: [
-    { name: "Templates", href: "/templates", icon: LayoutTemplate },
-    { name: "Inspiration", href: "/inspiration", icon: Sparkles },
   ],
 };
 
@@ -53,7 +43,6 @@ export function MobileNav() {
     ...navigation.assets,
     ...navigation.subBrands,
     ...navigation.tools,
-    ...navigation.resources,
   ];
 
   return (

@@ -13,10 +13,6 @@ import {
   Layers,
   Brush,
   Building2,
-  Mail,
-  UserPlus,
-  LayoutTemplate,
-  Sparkles,
   MessageCircle,
   ChevronLeft,
   Settings,
@@ -35,13 +31,7 @@ const navigation = {
   ],
   subBrands: [{ name: "LOUD Sports Club", href: "/sub-brands/loud-sports-club", icon: Building2 }],
   tools: [
-    { name: "Email Signature", href: "/tools/email-signature", icon: Mail },
-    { name: "New Team Member", href: "/tools/new-member", icon: UserPlus },
     { name: "Admin", href: "/admin", icon: Settings },
-  ],
-  resources: [
-    { name: "Templates", href: "/templates", icon: LayoutTemplate },
-    { name: "Inspiration", href: "/inspiration", icon: Sparkles },
   ],
 };
 
@@ -151,27 +141,6 @@ export function Sidebar() {
             ))}
           </div>
 
-          {/* Resources */}
-          <div className="mt-6">
-            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-white/40">
-              Resources
-            </p>
-            {navigation.resources.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-                  pathname === item.href
-                    ? "bg-white/10 text-white"
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
-                )}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.name}
-              </Link>
-            ))}
-          </div>
         </nav>
 
         {/* Footer */}
