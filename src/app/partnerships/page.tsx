@@ -309,20 +309,6 @@ export default function PartnershipsPage() {
                           </option>
                         ))}
                       </select>
-                      {/* Preview button */}
-                      <button
-                        onClick={() => {
-                          const logoToPreview = selectedLogos[partner.id] || partner.logo;
-                          if (logoToPreview) {
-                            openImagePreview(logoToPreview, partner.name);
-                          }
-                        }}
-                        className="flex items-center justify-center rounded-lg bg-white/10 px-3 text-white/70 transition-colors hover:bg-white/20 hover:text-white disabled:opacity-50"
-                        title="Preview"
-                        disabled={!selectedLogos[partner.id] && !partner.logo}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </button>
                       {/* Download button */}
                       <button
                         onClick={() => {
