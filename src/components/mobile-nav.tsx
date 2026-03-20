@@ -49,14 +49,14 @@ export function MobileNav() {
     <>
       {/* Mobile Header */}
       <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black/80 px-4 py-3 backdrop-blur-xl lg:hidden">
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
           <img 
             src="/logo-loud.png" 
             alt="LOUD" 
             className="h-8 w-8 rounded-lg object-cover"
           />
           <span className="text-lg font-bold">Brand Hub</span>
-        </div>
+        </Link>
         <div className="flex items-center gap-2">
           <LanguageToggle />
           <button

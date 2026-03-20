@@ -43,7 +43,7 @@ export function Sidebar() {
       <div className="flex h-full flex-col">
         {/* Logo */}
         <div className="flex items-center border-b border-white/10 p-4">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
             <img 
               src="/logo-loud.png" 
               alt="LOUD" 
@@ -53,7 +53,7 @@ export function Sidebar() {
             <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-white/60">
               BETA
             </span>
-          </div>
+          </Link>
         </div>
 
         {/* Navigation */}
