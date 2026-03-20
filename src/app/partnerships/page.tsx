@@ -238,15 +238,15 @@ export default function PartnershipsPage() {
                 <div
                   className="relative mb-4 flex h-24 cursor-pointer items-center justify-center rounded-lg bg-white/10 p-4 transition-all hover:bg-white/15"
                   onClick={() => {
-                    const logoToPreview = selectedLogos[partner.id] || partner.logo;
+                    const logoToPreview = selectedLogos[partner.id] || partner.logos?.[0]?.file || partner.logo;
                     if (logoToPreview) {
                       openImagePreview(logoToPreview, partner.name);
                     }
                   }}
                 >
-                  {(selectedLogos[partner.id] || partner.logo) ? (
+                  {(selectedLogos[partner.id] || partner.logos?.[0]?.file || partner.logo) ? (
                     <img
-                      src={selectedLogos[partner.id] || partner.logo}
+                      src={selectedLogos[partner.id] || partner.logos?.[0]?.file || partner.logo}
                       alt={partner.name}
                       className="max-h-full max-w-full object-contain"
                       onError={(e) => {
@@ -255,9 +255,9 @@ export default function PartnershipsPage() {
                       }}
                     />
                   ) : null}
-                  <Building2 className={`h-10 w-10 text-white/30 ${(selectedLogos[partner.id] || partner.logo) ? "hidden" : ""}`} />
+                  <Building2 className={`h-10 w-10 text-white/30 ${(selectedLogos[partner.id] || partner.logos?.[0]?.file || partner.logo) ? "hidden" : ""}`} />
                   {/* Preview hint overlay */}
-                  {(selectedLogos[partner.id] || partner.logo) && (
+                  {(selectedLogos[partner.id] || partner.logos?.[0]?.file || partner.logo) && (
                     <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                       <Eye className="h-6 w-6 text-white" />
                     </div>
@@ -271,25 +271,27 @@ export default function PartnershipsPage() {
                 {partner.logos && partner.logos.length > 0 && (
                   <div className="mb-3">
                     <div className="flex gap-2">
-                      <select
-                        id={`logo-select-${partner.id}`}
-                        className="flex-1 appearance-none rounded-lg bg-white/10 px-3 py-2 text-sm text-white/80 outline-none transition-colors hover:bg-white/15 focus:bg-white/15 cursor-pointer"
-                        value={selectedLogos[partner.id] || ""}
-                        onChange={(e) => handleLogoSelect(partner.id, e.target.value)}
-                      >
-                        <option value="" className="bg-zinc-900">
-                          {t("partnerships.selectLogo") || "Selecionar"} ({partner.logos.length})
-                        </option>
-                        {partner.logos.map((variation, idx) => (
-                          <option key={idx} value={variation.file} className="bg-zinc-900">
-                            {variation.name} • {variation.format}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="relative flex-1">
+                        <select
+                          id={`logo-select-${partner.id}`}
+                          className="w-full appearance-none rounded-lg bg-white/10 px-3 py-2 pr-8 text-sm text-white/80 outline-none transition-colors hover:bg-white/15 focus:bg-white/15 cursor-pointer"
+                          value={selectedLogos[partner.id] || partner.logos[0].file}
+                          onChange={(e) => handleLogoSelect(partner.id, e.target.value)}
+                        >
+                          {partner.logos.map((variation, idx) => (
+                            <option key={idx} value={variation.file} className="bg-zinc-900">
+                              {variation.name} • {variation.format}
+                            </option>
+                          ))}
+                        </select>
+                        <svg className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
                       {/* Download button */}
                       <button
                         onClick={() => {
-                          const logoToDownload = selectedLogos[partner.id];
+                          const logoToDownload = selectedLogos[partner.id] || partner.logos?.[0]?.file;
                           if (logoToDownload) {
                             const link = document.createElement('a');
                             link.href = logoToDownload;
@@ -297,9 +299,8 @@ export default function PartnershipsPage() {
                             link.click();
                           }
                         }}
-                        className="flex items-center justify-center rounded-lg bg-green-500/20 px-3 text-green-400 transition-colors hover:bg-green-500/30 disabled:opacity-50"
+                        className="flex items-center justify-center rounded-lg bg-green-500/20 px-3 text-green-400 transition-colors hover:bg-green-500/30"
                         title={t("partnerships.downloadLogo") || "Baixar"}
-                        disabled={!selectedLogos[partner.id]}
                       >
                         <Download className="h-4 w-4" />
                       </button>
