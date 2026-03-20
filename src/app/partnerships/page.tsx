@@ -21,10 +21,22 @@ interface Partner {
   logos?: LogoVariation[];
   brandGuide?: string;
   website?: string;
-  category: "main" | "gaming" | "lifestyle" | "media";
+  lines: string[]; // Which LOUD lines this sponsor applies to
 }
 
-// Partners data from CREATIVE TEAM Drive folder (DTFS - Jersey 2026)
+// Lines configuration
+const LINES = [
+  { id: "all", label: "Todos" },
+  { id: "lol", label: "League of Legends" },
+  { id: "valorant", label: "Valorant" },
+  { id: "r6", label: "Rainbow Six" },
+  { id: "freefire", label: "Free Fire" },
+  { id: "brawlstars", label: "Brawl Stars" },
+  { id: "kingsleague", label: "Kings League" },
+];
+
+// Partners data synced from Google Sheets: "LOUD Brand Hub - Mapeamento Lines x Patrocinadores"
+// Sheet ID: 14MkVr72wxlfU-MvSdR-2y6qlkr9Gmk_RODK_icFqxDo
 const defaultPartners: Partner[] = [
   {
     id: "poco",
@@ -36,7 +48,7 @@ const defaultPartners: Partner[] = [
     ],
     brandGuide: "/partners/poco-brandguide.pdf",
     website: "https://www.po.co/global/",
-    category: "main",
+    lines: ["lol", "valorant", "r6", "freefire", "brawlstars", "kingsleague"],
   },
   {
     id: "samsung",
@@ -48,7 +60,7 @@ const defaultPartners: Partner[] = [
     ],
     brandGuide: "/partners/samsung-brandguide.pdf",
     website: "https://www.samsung.com/br/",
-    category: "main",
+    lines: ["lol", "valorant", "r6", "freefire", "brawlstars", "kingsleague"],
   },
   {
     id: "snickers",
@@ -60,7 +72,7 @@ const defaultPartners: Partner[] = [
     ],
     brandGuide: "/partners/snickers-brandguide.pdf",
     website: "https://snickers.com",
-    category: "lifestyle",
+    lines: ["lol", "valorant", "r6", "freefire", "brawlstars"],
   },
   {
     id: "h2bet",
@@ -73,7 +85,7 @@ const defaultPartners: Partner[] = [
       { name: "H2", file: "/partners/sponsors/h2bet-h2.png", format: "PNG" },
     ],
     website: "https://h2bet.com/",
-    category: "gaming",
+    lines: ["lol", "valorant", "r6", "freefire", "brawlstars"],
   },
   {
     id: "aztro",
@@ -84,7 +96,7 @@ const defaultPartners: Partner[] = [
       { name: "Principal", file: "/partners/sponsors/aztro.png", format: "PNG" },
     ],
     website: "https://aztro.com.br/",
-    category: "lifestyle",
+    lines: ["lol", "valorant", "r6", "freefire", "brawlstars"],
   },
   {
     id: "uniasselvi",
@@ -95,22 +107,9 @@ const defaultPartners: Partner[] = [
       { name: "Principal", file: "/partners/sponsors/uniasselvi.png", format: "PNG" },
     ],
     website: "https://portal.uniasselvi.com.br/",
-    category: "lifestyle",
+    lines: ["lol", "r6", "freefire", "brawlstars"], // NOT Valorant (except Romanilly)
   },
 ];
-
-const getCategoryName = (id: string, t: (key: string) => string) => {
-  const map: Record<string, string> = {
-    all: t("partnerships.all"),
-    main: t("partnerships.mainPartners"),
-    gaming: t("partnerships.gaming"),
-    lifestyle: t("partnerships.lifestyle"),
-    media: t("partnerships.media"),
-  };
-  return map[id] || id;
-};
-
-const categoryIds = ["all", "main", "gaming", "lifestyle", "media"];
 
 export default function PartnershipsPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -136,7 +135,7 @@ export default function PartnershipsPage() {
   const filteredPartners =
     selectedCategory === "all"
       ? partners
-      : partners.filter((p) => p.category === selectedCategory);
+      : partners.filter((p) => p.lines.includes(selectedCategory));
 
   const handleLogoSelect = (partnerId: string, logoFile: string) => {
     setSelectedLogos((prev) => ({ ...prev, [partnerId]: logoFile }));
@@ -186,19 +185,19 @@ export default function PartnershipsPage() {
           )}
         </div>
 
-        {/* Category Filter */}
+        {/* Line Filter */}
         <div className="mb-6 flex flex-wrap gap-2 lg:mb-8">
-          {categoryIds.map((categoryId) => (
+          {LINES.map((line) => (
             <button
-              key={categoryId}
-              onClick={() => setSelectedCategory(categoryId)}
+              key={line.id}
+              onClick={() => setSelectedCategory(line.id)}
               className={`rounded-full px-4 py-2 text-sm transition-all ${
-                selectedCategory === categoryId
+                selectedCategory === line.id
                   ? "bg-green-500 text-black font-medium"
                   : "bg-white/10 text-white/70 hover:bg-white/20"
               }`}
             >
-              {getCategoryName(categoryId, t)}
+              {line.label}
             </button>
           ))}
         </div>
