@@ -134,74 +134,29 @@ export default function LogoPage() {
         <section className="mb-8 lg:mb-12">
           <h2 className="mb-3 text-lg font-semibold lg:mb-4 lg:text-xl">Logo + Patrocinador</h2>
           <p className="mb-4 text-sm text-white/60">
-            Diretrizes para quando a logo LOUD aparecer junto a patrocinadores.
+            Combinações aprovadas de logo LOUD com patrocinadores.
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
             <AssetCard
-              name="Logo + 1 Patrocinador"
-              description="Disposição horizontal lado a lado"
+              name="Logotype + Sponsors"
+              description="Versão horizontal com patrocinadores"
               variant="dark"
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/sponsor-combos/logotype.svg"
+              onPreview={() => openPreview("/logos/sponsor-combos/logotype.png", "Logotype + Sponsors")}
               preview={
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-green-400 to-green-600">
-                      <span className="text-xs font-black text-white">L</span>
-                    </div>
-                    <span className="text-lg font-black text-white">LOUD</span>
-                  </div>
-                  <div className="h-6 w-px bg-white/20" />
-                  <div className="flex h-6 w-16 items-center justify-center rounded bg-white/10 text-[10px] text-white/60">
-                    SPONSOR
-                  </div>
-                </div>
+                <img src="/logos/sponsor-combos/logotype.png" alt="LOUD Logotype + Sponsors" className="h-12 w-auto" />
               }
             />
             <AssetCard
-              name="Logo + 2 Patrocinadores"
-              description="LOUD centralizada com sponsors nas laterais"
+              name="Icon + Sponsors"
+              description="Versão compacta com patrocinadores"
               variant="dark"
+              formats={["SVG", "PNG"]}
+              downloadUrl="/logos/sponsor-combos/icon.svg"
+              onPreview={() => openPreview("/logos/sponsor-combos/icon.png", "Icon + Sponsors")}
               preview={
-                <div className="flex items-center justify-center gap-3">
-                  <div className="flex h-5 w-12 items-center justify-center rounded bg-white/10 text-[8px] text-white/60">
-                    SPONSOR
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="flex h-5 w-5 items-center justify-center rounded bg-gradient-to-br from-green-400 to-green-600">
-                      <span className="text-[10px] font-black text-white">L</span>
-                    </div>
-                    <span className="text-sm font-black text-white">LOUD</span>
-                  </div>
-                  <div className="flex h-5 w-12 items-center justify-center rounded bg-white/10 text-[8px] text-white/60">
-                    SPONSOR
-                  </div>
-                </div>
-              }
-            />
-            <AssetCard
-              name="Logo + Múltiplos"
-              description="Fileira de patrocinadores abaixo da logo"
-              variant="dark"
-              preview={
-                <div className="flex flex-col items-center gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-green-400 to-green-600">
-                      <span className="text-xs font-black text-white">L</span>
-                    </div>
-                    <span className="text-lg font-black text-white">LOUD</span>
-                  </div>
-                  <div className="h-px w-full bg-white/10" />
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-4 w-10 items-center justify-center rounded bg-white/10 text-[6px] text-white/60">
-                      SP1
-                    </div>
-                    <div className="flex h-4 w-10 items-center justify-center rounded bg-white/10 text-[6px] text-white/60">
-                      SP2
-                    </div>
-                    <div className="flex h-4 w-10 items-center justify-center rounded bg-white/10 text-[6px] text-white/60">
-                      SP3
-                    </div>
-                  </div>
-                </div>
+                <img src="/logos/sponsor-combos/icon.png" alt="LOUD Icon + Sponsors" className="h-12 w-auto" />
               }
             />
           </div>
