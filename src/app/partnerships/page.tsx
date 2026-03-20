@@ -24,15 +24,15 @@ interface Partner {
   category: "main" | "gaming" | "lifestyle" | "media";
 }
 
-// Partners data from CREATIVE TEAM Drive folder
+// Partners data from CREATIVE TEAM Drive folder (DTFS - Jersey 2026)
 const defaultPartners: Partner[] = [
   {
     id: "poco",
     name: "POCO",
-    logo: "/partners/poco-logo.png",
+    logo: "/partners/sponsors/poco.png",
     logos: [
-      { name: "Principal", file: "/partners/poco-logo.png", format: "PNG" },
-      { name: "Principal", file: "/partners/poco-logo.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/poco.png", format: "PNG" },
+      { name: "Principal", file: "/partners/sponsors/poco.svg", format: "SVG" },
     ],
     brandGuide: "/partners/poco-brandguide.pdf",
     website: "https://www.po.co/global/",
@@ -40,84 +40,61 @@ const defaultPartners: Partner[] = [
   },
   {
     id: "samsung",
-    name: "Samsung Odyssey",
-    logo: "/partners/samsung-odyssey-logo.svg",
+    name: "Samsung",
+    logo: "/partners/sponsors/samsung.svg",
     logos: [
-      { name: "Odyssey", file: "/partners/samsung-odyssey-logo.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/samsung.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/samsung.png", format: "PNG" },
     ],
     brandGuide: "/partners/samsung-brandguide.pdf",
-    website: "https://www.samsung.com/br/monitors/gaming/",
-    category: "gaming",
+    website: "https://www.samsung.com/br/",
+    category: "main",
   },
   {
     id: "snickers",
     name: "Snickers",
-    logo: "/partners/snickers-logo.svg",
+    logo: "/partners/sponsors/snickers.svg",
     logos: [
-      { name: "Principal", file: "/partners/snickers-logo.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/snickers.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/snickers.png", format: "PNG" },
     ],
     brandGuide: "/partners/snickers-brandguide.pdf",
     website: "https://snickers.com",
     category: "lifestyle",
   },
   {
-    id: "havan",
-    name: "Havan",
-    logo: "",
-    brandGuide: "/partners/havan-brandguide.pdf",
-    website: "https://www.havan.com.br/",
-    category: "lifestyle",
-  },
-  {
-    id: "cblol",
-    name: "CBLOL",
-    logo: "/partners/cblol-logo.png",
-    logos: [
-      { name: "Horizontal", file: "/partners/cblol-logo.png", format: "PNG" },
-      { name: "Horizontal", file: "/partners/cblol-logo-hor.svg", format: "SVG" },
-      { name: "Horizontal Black", file: "/partners/cblol-logo-black-h.png", format: "PNG" },
-      { name: "Vertical", file: "/partners/cblol-logo-ver.png", format: "PNG" },
-      { name: "Vertical", file: "/partners/cblol-logo-ver.svg", format: "SVG" },
-      { name: "Vertical Black", file: "/partners/cblol-logo-black.png", format: "PNG" },
-      { name: "Ícone", file: "/partners/cblol-icon.svg", format: "SVG" },
-    ],
-    brandGuide: "",
-    website: "https://lolesports.com/pt-BR/lol/cblol",
-    category: "gaming",
-  },
-  {
-    id: "uniasselvi",
-    name: "Uniasselvi",
-    logo: "",
-    brandGuide: "",
-    website: "https://portal.uniasselvi.com.br/",
-    category: "lifestyle",
-  },
-  {
-    id: "mentos",
-    name: "Mentos",
-    logo: "/partners/mentos-logo.png",
-    logos: [
-      { name: "Principal", file: "/partners/mentos-logo.png", format: "PNG" },
-    ],
-    brandGuide: "",
-    website: "https://mentos.com.br/",
-    category: "lifestyle",
-  },
-  {
     id: "h2bet",
     name: "H2bet",
-    logo: "",
-    brandGuide: "",
+    logo: "/partners/sponsors/h2bet.svg",
+    logos: [
+      { name: "Principal", file: "/partners/sponsors/h2bet.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/h2bet.png", format: "PNG" },
+      { name: "H2", file: "/partners/sponsors/h2bet-h2.svg", format: "SVG" },
+      { name: "H2", file: "/partners/sponsors/h2bet-h2.png", format: "PNG" },
+    ],
     website: "https://h2bet.com/",
     category: "gaming",
   },
   {
     id: "aztro",
     name: "Aztro",
-    logo: "",
-    brandGuide: "",
-    website: "",
+    logo: "/partners/sponsors/aztro.svg",
+    logos: [
+      { name: "Principal", file: "/partners/sponsors/aztro.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/aztro.png", format: "PNG" },
+    ],
+    website: "https://aztro.com.br/",
+    category: "lifestyle",
+  },
+  {
+    id: "uniasselvi",
+    name: "Uniasselvi",
+    logo: "/partners/sponsors/uniasselvi.svg",
+    logos: [
+      { name: "Principal", file: "/partners/sponsors/uniasselvi.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/uniasselvi.png", format: "PNG" },
+    ],
+    website: "https://portal.uniasselvi.com.br/",
     category: "lifestyle",
   },
 ];
