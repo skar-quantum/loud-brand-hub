@@ -24,7 +24,9 @@ interface Partner {
   lines: string[]; // Which LOUD lines this sponsor applies to
 }
 
-// Lines configuration
+// Lines configuration - synced from Google Sheets
+// Sheet: [INT.][LOUDgg] Parceiros Comerciais
+// ID: 1PuQW_NBbBEI_kxCKocvaOD5c0GS1o6OgeeK2D0vKbY0
 const LINES = [
   { id: "all", label: "Todos" },
   { id: "lol", label: "League of Legends" },
@@ -35,33 +37,9 @@ const LINES = [
   { id: "kingsleague", label: "Kings League" },
 ];
 
-// Partners data synced from Google Sheets: "LOUD Brand Hub - Mapeamento Lines x Patrocinadores"
-// Sheet ID: 14MkVr72wxlfU-MvSdR-2y6qlkr9Gmk_RODK_icFqxDo
+// Partners data synced from Google Sheets: "[INT.][LOUDgg] Parceiros Comerciais"
+// Last updated: 12/02/2026
 const defaultPartners: Partner[] = [
-  {
-    id: "poco",
-    name: "POCO",
-    logo: "/partners/sponsors/poco.png",
-    logos: [
-      { name: "Principal", file: "/partners/sponsors/poco.png", format: "PNG" },
-      { name: "Principal", file: "/partners/sponsors/poco.svg", format: "SVG" },
-    ],
-    brandGuide: "/partners/poco-brandguide.pdf",
-    website: "https://www.po.co/global/",
-    lines: ["lol", "valorant", "r6", "freefire", "brawlstars", "kingsleague"],
-  },
-  {
-    id: "samsung",
-    name: "Samsung",
-    logo: "/partners/sponsors/samsung.svg",
-    logos: [
-      { name: "Principal", file: "/partners/sponsors/samsung.svg", format: "SVG" },
-      { name: "Principal", file: "/partners/sponsors/samsung.png", format: "PNG" },
-    ],
-    brandGuide: "/partners/samsung-brandguide.pdf",
-    website: "https://www.samsung.com/br/",
-    lines: ["lol", "valorant", "r6", "freefire", "brawlstars", "kingsleague"],
-  },
   {
     id: "snickers",
     name: "Snickers",
@@ -72,19 +50,6 @@ const defaultPartners: Partner[] = [
     ],
     brandGuide: "/partners/snickers-brandguide.pdf",
     website: "https://snickers.com",
-    lines: ["lol", "valorant", "r6", "freefire", "brawlstars"],
-  },
-  {
-    id: "h2bet",
-    name: "H2bet",
-    logo: "/partners/sponsors/h2bet.svg",
-    logos: [
-      { name: "Principal", file: "/partners/sponsors/h2bet.svg", format: "SVG" },
-      { name: "Principal", file: "/partners/sponsors/h2bet.png", format: "PNG" },
-      { name: "H2", file: "/partners/sponsors/h2bet-h2.svg", format: "SVG" },
-      { name: "H2", file: "/partners/sponsors/h2bet-h2.png", format: "PNG" },
-    ],
-    website: "https://h2bet.com/",
     lines: ["lol", "valorant", "r6", "freefire", "brawlstars"],
   },
   {
@@ -99,6 +64,19 @@ const defaultPartners: Partner[] = [
     lines: ["lol", "valorant", "r6", "freefire", "brawlstars"],
   },
   {
+    id: "h2bet",
+    name: "H2Bet",
+    logo: "/partners/sponsors/h2bet.svg",
+    logos: [
+      { name: "Principal", file: "/partners/sponsors/h2bet.svg", format: "SVG" },
+      { name: "Principal", file: "/partners/sponsors/h2bet.png", format: "PNG" },
+      { name: "H2", file: "/partners/sponsors/h2bet-h2.svg", format: "SVG" },
+      { name: "H2", file: "/partners/sponsors/h2bet-h2.png", format: "PNG" },
+    ],
+    website: "https://h2bet.com/",
+    lines: ["lol", "valorant", "r6", "freefire", "brawlstars"],
+  },
+  {
     id: "uniasselvi",
     name: "Uniasselvi",
     logo: "/partners/sponsors/uniasselvi.svg",
@@ -107,7 +85,7 @@ const defaultPartners: Partner[] = [
       { name: "Principal", file: "/partners/sponsors/uniasselvi.png", format: "PNG" },
     ],
     website: "https://portal.uniasselvi.com.br/",
-    lines: ["lol", "r6", "freefire", "brawlstars"], // NOT Valorant (except Romanilly)
+    lines: ["lol", "r6", "freefire", "brawlstars", "kingsleague"], // NOT Valorant (except Romanilly)
   },
 ];
 
