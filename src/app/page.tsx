@@ -67,22 +67,9 @@ export default function Home() {
             {t("home.title")}
           </span>
         </h1>
-        <p className="mx-auto mb-6 max-w-md text-sm text-white/60 lg:mb-8 lg:text-lg">
+        <p className="mx-auto mb-8 max-w-md text-sm text-white/60 lg:mb-12 lg:text-lg">
           {t("home.subtitle")}
         </p>
-
-        {/* Avatars */}
-        <div className="mb-8 flex items-center justify-center gap-2 lg:mb-12">
-          <div className="flex -space-x-2">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="h-6 w-6 rounded-full border-2 border-black bg-gradient-to-br from-white/20 to-white/5 lg:h-8 lg:w-8"
-              />
-            ))}
-          </div>
-          <span className="ml-2 text-xs text-white/40 lg:text-sm">{t("home.teamMembers")}</span>
-        </div>
 
         {/* Quick Links */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
